@@ -1052,7 +1052,7 @@ Widget courseItemVertically(CourseModel courseData,{bool isSmallSize=true,double
 
 }
 
-Widget input(TextEditingController controller,FocusNode node,String hint,{String? iconPathLeft,bool isNumber=false,bool isCenter=false,int letterSpacing=1,bool isReadOnly=false,Function? onTap,int height=52,bool isPassword=false,Function? onTapLeftIcon, Function? obscureText,int leftIconSize=14,String? Function(String?)? validator,bool isError=false,Function(String)? onChange,int fontSize=16,Color leftIconColor=const Color(0xff6E6E6E),double radius = 20,int? maxLength,bool isBorder=false,Color fillColor=Colors.white,int? maxLine,String? title, String? rightIconPath, int rightIconSize=14, Function? onTapRightIcon}){
+Widget input(TextEditingController controller,FocusNode node,String hint,{String? iconPathLeft,bool isNumber=false,bool isCenter=false,int letterSpacing=1,bool isReadOnly=false,Function? onTap,int height=52,bool isPassword=false,Function? onTapLeftIcon, Function? obscureText,int leftIconSize=14,String? Function(String?)? validator,bool isError=false,Function(String)? onChange,int fontSize=16,Color leftIconColor=const Color(0xff6E6E6E),double radius = 20,int? maxLength,bool isBorder=false,Color fillColor=Colors.white,int? maxLine,String? title, String? rightIconPath, int rightIconSize=14, Function? onTapRightIcon, TextDirection? direction = TextDirection.rtl}){
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisSize: MainAxisSize.min,
@@ -1106,18 +1106,21 @@ Widget input(TextEditingController controller,FocusNode node,String hint,{String
               height: 1,
               color: greyB2
             ),
-            keyboardType: TextInputType.text,
+            textDirection: direction,
+            
+            keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+            
             textAlign: isCenter 
             ? TextAlign.center 
             : TextAlign.start,
-          
+
           
             autofillHints: const [ AutofillHints.oneTimeCode ],
             inputFormatters: [
               LengthLimitingTextInputFormatter(maxLength),
               
               if(isNumber)...{
-                FilteringTextInputFormatter.digitsOnly
+                FilteringTextInputFormatter.digitsOnly,
               }
             ],
             decoration: InputDecoration(

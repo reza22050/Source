@@ -5,22 +5,29 @@ import '../../config/assets.dart';
 class AppLanguage{
   
   late String currentLanguage;
-  List<String> rtlLanguage = ['ar'];
+  List<String> rtlLanguage = ['fa'];
 
   bool isRtl() => rtlLanguage.contains(currentLanguage.toLowerCase());
 
   List<CountryCode> appLanguagesData = [
-    CountryCode(
-      name: "English (US)",
-      code: "EN",
-      dialCode: '+1',
-      flagUri: '${AppAssets.flags}${"en".toLowerCase()}.png',
-    ),
+    // CountryCode(
+    //   name: "English (US)",
+    //   code: "EN",
+    //   dialCode: '+1',
+    //   flagUri: '${AppAssets.flags}${"en".toLowerCase()}.png',
+    // ),
+
+    // CountryCode(
+    //   name: "Arabic",
+    //   code: "AR",
+    //   dialCode: '+966',
+    //   flagUri: '${AppAssets.flags}${"sa".toLowerCase()}.png',
+    // ),
 
     CountryCode(
-      name: "Arabic",
-      code: "AR",
-      dialCode: '+966',
+      name: "Farsi",
+      code: "FA",
+      dialCode: '+98',
       flagUri: '${AppAssets.flags}${"sa".toLowerCase()}.png',
     ),
   ];
@@ -34,7 +41,7 @@ class AppLanguage{
 
   Future getLanguage() async {    
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    currentLanguage = prefs.getString('language') ?? 'en';
+    currentLanguage = prefs.getString('language') ?? 'fa';
     return currentLanguage;
   }
 

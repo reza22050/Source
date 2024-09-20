@@ -32,11 +32,11 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   String? otherRegisterMethod;
   bool isPhoneNumber=true;
   
-  CountryCode countryCode = CountryCode(
-    code: "US",
-    dialCode: "+1",
-    flagUri: "${AppAssets.flags}en.png",
-    name: "United States"
+ CountryCode countryCode = CountryCode(
+    code: "FA",
+    dialCode: "+98",
+    flagUri: "${AppAssets.flags}fa.png",
+    name: "جمهوری اسلامی ایران"
   );
 
   @override
@@ -120,7 +120,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
                     const Spacer(flex: 2),
 
-                    space(25),
+                    space(50),
 
                     // Other Register Method
                     if(PublicData.apiConfigData?['showOtherRegisterMethod'] == '1')...{

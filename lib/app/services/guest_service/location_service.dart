@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:http/http.dart';
 import 'package:webinar/app/models/location_model.dart';
 
@@ -21,6 +23,7 @@ class LocationService{
 
       if (jsonRes['success']) {
         jsonRes['data'].forEach((json){
+          log(json);
           data.add(LocationModel.fromJson(json));
         });
 
