@@ -256,16 +256,22 @@ Future<dio.Response> dioPost(String url, dynamic body,{Map<String, String> heade
 
   if(headers.isEmpty){
     headers = {
-      "Content-Type" : "application/json", 
-      'Accept' : 'application/json',
-      'x-api-key' : Constants.apiKey,
-      'x-locale' : locator<AppLanguage>().currentLanguage.toLowerCase(),
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      //'x-api-key' : Constants.apiKey,
+      //'x-locale' : locator<AppLanguage>().currentLanguage.toLowerCase(),
     };
   }
   
+ // Convert FormData to JSON-like data
+  Map<String, dynamic> jsonData = {};
+  body.fields.forEach((field) {
+    jsonData[field.key] = field.value;
+  });
+
   var res = await locator<dio.Dio>().post(
     url, 
-    data: body,
+    data: jsonData,
     options: dio.Options(
       headers: headers
     )

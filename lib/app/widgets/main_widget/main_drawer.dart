@@ -273,146 +273,146 @@ class _MainDrawerState extends State<MainDrawer> {
                   space(10),
                   
 
-                  Container(
-                    width: getSize().width,
-                    margin: const EdgeInsets.only(bottom: 40),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                  // Container(
+                  //   width: getSize().width,
+                  //   margin: const EdgeInsets.only(bottom: 40),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
 
-                        // login + language
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
+                  //       // login + language
+                  //       Row(
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: [
 
-                            // language
-                            GestureDetector(
-                              onTap: () async {
-                                MainWidget.showLanguageDialog();
-                              },
-                              behavior: HitTestBehavior.opaque,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
+                  //           // language
+                  //           GestureDetector(
+                  //             onTap: () async {
+                  //               MainWidget.showLanguageDialog();
+                  //             },
+                  //             behavior: HitTestBehavior.opaque,
+                  //             child: Row(
+                  //               mainAxisSize: MainAxisSize.min,
+                  //               children: [
                             
-                                  ClipRRect(
-                                    borderRadius: borderRadius(),
-                                    child: Image.asset(
-                                      '${AppAssets.flags}${locator<AppLanguage>().currentLanguage}.png',
-                                      width: 21,
-                                      height: 20,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
+                  //                 ClipRRect(
+                  //                   borderRadius: borderRadius(),
+                  //                   child: Image.asset(
+                  //                     '${AppAssets.flags}${locator<AppLanguage>().currentLanguage}.png',
+                  //                     width: 21,
+                  //                     height: 20,
+                  //                     fit: BoxFit.cover,
+                  //                   ),
+                  //                 ),
                             
-                                  space(0,width: 6),
+                  //                 space(0,width: 6),
                             
-                                  Text(
-                                    locator<AppLanguage>().appLanguagesData[locator<AppLanguage>().appLanguagesData.indexWhere((element) => element.code!.toLowerCase() == locator<AppLanguage>().currentLanguage.toLowerCase())].name ?? '',
-                                    style: style12Regular().copyWith(color: Colors.white),
-                                  ),
+                  //                 Text(
+                  //                   locator<AppLanguage>().appLanguagesData[locator<AppLanguage>().appLanguagesData.indexWhere((element) => element.code!.toLowerCase() == locator<AppLanguage>().currentLanguage.toLowerCase())].name ?? '',
+                  //                   style: style12Regular().copyWith(color: Colors.white),
+                  //                 ),
                             
-                                  space(0,width: 6),
+                  //                 space(0,width: 6),
                                   
-                                  Icon(Icons.keyboard_arrow_down_rounded,color: Colors.white.withOpacity(.6),)
-                                ],
-                              ),
-                            ),
+                  //                 Icon(Icons.keyboard_arrow_down_rounded,color: Colors.white.withOpacity(.6),)
+                  //               ],
+                  //             ),
+                  //           ),
 
 
-                            // line
-                            Container(
-                              margin: padding(horizontal: 8),
-                              width: 1.5,
-                              height: 18,
-                              color: Colors.white.withOpacity(.5),
-                            ),
+                  //           // line
+                  //           Container(
+                  //             margin: padding(horizontal: 8),
+                  //             width: 1.5,
+                  //             height: 18,
+                  //             color: Colors.white.withOpacity(.5),
+                  //           ),
                             
 
-                            GestureDetector(
-                              onTap: () async {
+                  //           GestureDetector(
+                  //             onTap: () async {
 
-                                if(token.isNotEmpty){
-                                  drawerController.hideDrawer();
+                  //               if(token.isNotEmpty){
+                  //                 drawerController.hideDrawer();
                                   
-                                  // logout
-                                  UserService.logout();
-                                  await Future.delayed(const Duration(milliseconds: 200));
+                  //                 // logout
+                  //                 UserService.logout();
+                  //                 await Future.delayed(const Duration(milliseconds: 200));
 
-                                  AppData.saveAccessToken('');
-                                  AppDataBase.clearBox();
+                  //                 AppData.saveAccessToken('');
+                  //                 AppDataBase.clearBox();
                                   
-                                  locator<UserProvider>().clearAll();
-                                  locator<AppLanguageProvider>().changeState();
+                  //                 locator<UserProvider>().clearAll();
+                  //                 locator<AppLanguageProvider>().changeState();
 
-                                }else{
-                                  AppData.saveAccessToken('');
-                                  nextRoute(LoginPage.pageName, isClearBackRoutes: true);
-                                }
-                              },
-                              behavior: HitTestBehavior.opaque,
-                              child: SizedBox(
+                  //               }else{
+                  //                 AppData.saveAccessToken('');
+                  //                 nextRoute(LoginPage.pageName, isClearBackRoutes: true);
+                  //               }
+                  //             },
+                  //             behavior: HitTestBehavior.opaque,
+                  //             child: SizedBox(
                                 
-                                height: 35,
-                                width: 45,
-                                child: Center(
-                                  child: Text(
-                                    token.isNotEmpty
-                                      ? appText.logOut
-                                      : appText.login,
-                                    style: style12Regular().copyWith(color: Colors.white, height: .8),
-                                  ),
-                                ),
-                              ),
-                            )
+                  //               height: 35,
+                  //               width: 45,
+                  //               child: Center(
+                  //                 child: Text(
+                  //                   token.isNotEmpty
+                  //                     ? appText.logOut
+                  //                     : appText.login,
+                  //                   style: style12Regular().copyWith(color: Colors.white, height: .8),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           )
 
-                          ],
-                        ),
+                  //         ],
+                  //       ),
 
-                        space(12),
+                  //       space(12),
 
-                        // currency
-                        GestureDetector(
-                          onTap: (){
-                            MainWidget.showCurrencyDialog();
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
+                  //       // currency
+                  //       GestureDetector(
+                  //         onTap: (){
+                  //           MainWidget.showCurrencyDialog();
+                  //         },
+                  //         behavior: HitTestBehavior.opaque,
+                  //         child: Row(
+                  //           mainAxisSize: MainAxisSize.min,
+                  //           children: [
                         
-                              Container(
-                                width: 21,
-                                height: 21,
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(.2),
-                                  borderRadius: borderRadius(radius: 5)
-                                ),
-                                alignment: Alignment.center,
+                  //             Container(
+                  //               width: 21,
+                  //               height: 21,
+                  //               decoration: BoxDecoration(
+                  //                 color: Colors.black.withOpacity(.2),
+                  //                 borderRadius: borderRadius(radius: 5)
+                  //               ),
+                  //               alignment: Alignment.center,
 
-                                child: Text(
-                                  CurrencyUtils.getSymbol(CurrencyUtils.userCurrency),
-                                  style: style12Regular().copyWith(color: Colors.white,height: 1),
-                                ),
-                              ),
+                  //               child: Text(
+                  //                 CurrencyUtils.getSymbol(CurrencyUtils.userCurrency),
+                  //                 style: style12Regular().copyWith(color: Colors.white,height: 1),
+                  //               ),
+                  //             ),
                         
-                              space(0,width: 6),
+                  //             space(0,width: 6),
                         
-                              Text(
-                                CurrencyUtils.userCurrency,
-                                style: style12Regular().copyWith(color: Colors.white),
-                              ),
+                  //             Text(
+                  //               CurrencyUtils.userCurrency,
+                  //               style: style12Regular().copyWith(color: Colors.white),
+                  //             ),
                         
-                              space(0,width: 6),
+                  //             space(0,width: 6),
                               
-                              Icon(Icons.keyboard_arrow_down_rounded,color: Colors.white.withOpacity(.6),)
-                            ],
-                          ),
-                        ),
+                  //             Icon(Icons.keyboard_arrow_down_rounded,color: Colors.white.withOpacity(.6),)
+                  //           ],
+                  //         ),
+                  //       ),
 
-                      ],
-                    ),
-                  )
+                  //     ],
+                  //   ),
+                  // )
             
                 ],
               ),

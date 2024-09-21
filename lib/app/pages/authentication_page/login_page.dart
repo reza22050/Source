@@ -254,9 +254,7 @@ class _LoginPageState extends State<LoginPage> {
                               isSendingData = true;
                             });
 
-                            bool res = await AuthenticationService.login(
-                                '${isPhoneNumber ? countryCode.dialCode!.replaceAll('+', '') : ''}${mailController.text.trim()}',
-                                passwordController.text.trim());
+                            bool res = await AuthenticationService.login(mailController.text.trim(),passwordController.text.trim());
 
                             setState(() {
                               isSendingData = false;
@@ -286,12 +284,12 @@ class _LoginPageState extends State<LoginPage> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        nextRoute(WebViewPage.pageName, arguments: [
-                          '${Constants.dommain}/pages/app-terms',
-                          appText.webinar,
-                          false,
-                          LoadRequestMethod.get
-                        ]);
+                        // nextRoute(WebViewPage.pageName, arguments: [
+                        //   '${Constants.dommain}/pages/app-terms',
+                        //   appText.webinar,
+                        //   false,
+                        //   LoadRequestMethod.get
+                        // ]);
                       },
                       behavior: HitTestBehavior.opaque,
                       child: Text(

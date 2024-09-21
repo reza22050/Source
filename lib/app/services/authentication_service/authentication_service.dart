@@ -7,6 +7,7 @@ import 'package:webinar/common/utils/constants.dart';
 import 'package:webinar/common/utils/error_handler.dart';
 import 'package:webinar/common/utils/http_handler.dart';
 import 'package:http/http.dart';
+import 'package:dio/dio.dart' as dio;
 
 class AuthenticationService{
 
@@ -67,25 +68,56 @@ class AuthenticationService{
 
   static Future login(String username, String password)async{
     try{
-      String url = '${Constants.baseUrl}login';
+      String url = '${Constants.apiUrl}account/login';
 
-      Response res = await httpPost(
-        url, 
-        {
-          'username': username,
-          'password': password
-        }
+      // Response res = await httpPost(
+      //   url, 
+      //   {
+      //     'username': username,
+      //     'password': password
+      //   }
+      // );
+
+      // log(res.body.toString());
+
+      // var jsonResponse = jsonDecode(res.body);
+      // if(jsonResponse['success']){
+      //   await AppData.saveAccessToken(jsonResponse['data']['token']);
+      //   await AppData.saveName('');
+      //   return true;
+      // }else{
+      //   ErrorHandler().showError(ErrorEnum.error, jsonResponse,readMessage: true);
+      //   return false;
+      // }
+
+    
+      dio.FormData formData = dio.FormData.fromMap({
+
+        "username": username,
+        "password": password,
+        "agent": "MobileApplication"
+      });
+      
+      dio.Response res = await dioPost(
+        url,
+        formData 
+        //isRedirectingStatusCode: false
       );
 
-      log(res.body.toString());
-
-      var jsonResponse = jsonDecode(res.body);
-      if(jsonResponse['success']){
-        await AppData.saveAccessToken(jsonResponse['data']['token']);
-        await AppData.saveName('');
+      //log(res.['data']);
+      
+      var jsonResponse = res.data['data']['tokenData'];
+      if(res.data['isSuccess']){
+        await AppData.saveAccessToken(jsonResponse['accessToken']);
+        await AppData.saveRefreshToken(jsonResponse['refreshToken']);
+        await AppData.saveName(jsonResponse['fullName']);
+  
         return true;
+      // if(res.data['success']){
+      //   ErrorHandler().showError(ErrorEnum.success, res.data,readMessage: true);
+      //   return true;
       }else{
-        ErrorHandler().showError(ErrorEnum.error, jsonResponse,readMessage: true);
+        ErrorHandler().showError(ErrorEnum.error, res.data);
         return false;
       }
 
