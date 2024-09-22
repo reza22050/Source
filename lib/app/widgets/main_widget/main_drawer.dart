@@ -10,17 +10,12 @@ import 'package:webinar/app/pages/main_page/home_page/setting_page/setting_page.
 import 'package:webinar/app/providers/app_language_provider.dart';
 import 'package:webinar/app/providers/page_provider.dart';
 import 'package:webinar/app/providers/user_provider.dart';
-import 'package:webinar/app/services/user_service/user_service.dart';
-import 'package:webinar/app/widgets/main_widget/main_widget.dart';
 import 'package:webinar/common/common.dart';
 import 'package:webinar/common/components.dart';
 import 'package:webinar/common/data/app_data.dart';
-import 'package:webinar/common/data/app_language.dart';
-import 'package:webinar/common/database/app_database.dart';
 import 'package:webinar/common/enums/error_enum.dart';
 import 'package:webinar/common/enums/page_name_enum.dart';
 import 'package:webinar/common/utils/app_text.dart';
-import 'package:webinar/common/utils/currency_utils.dart';
 import 'package:webinar/config/assets.dart';
 import 'package:webinar/config/styles.dart';
 import 'package:webinar/locator.dart';

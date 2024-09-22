@@ -29,20 +29,20 @@ class UserModel {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    fullName = json['full_name'];
-    roleName = json['role_name'];
-    bio = json['bio'];
+    fullName = (json['firstName'] ?? '') + " " + (json['lastName'] ?? '');
+    roleName = json['courseTitle'];
+    /*bio = json['bio'];
     offline = json['offline']?.toString();
     email = json['email'];
     offlineMessage = json['offline_message'];
-    verified = json['verified']?.toString();
-    rate = json['rate']?.toString();
-    avatar = json['avatar'];
-    meetingStatus = json['meeting_status'];
+    verified = json['verified']?.toString();*/
+    rate = "5"; //json['rate']?.toString();
+    avatar = json['image'];
+    /*meetingStatus = json['meeting_status'];
     userGroup = json['user_group'] != null
         ? UserGroup.fromJson(json['user_group'])
         : null;
-    address = json['address'];
+    address = json['address'];*/
   }
 
   Map<String, dynamic> toJson() {

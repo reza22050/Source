@@ -2134,7 +2134,7 @@ Widget userProfileCard(UserModel user,Function onTap){
                 space(2),
                 
                 Text(
-                  user.bio ?? '',
+                  user.roleName ?? '',
                   style: style10Regular().copyWith(color: greyA5),
                   maxLines: 1,
                 ),

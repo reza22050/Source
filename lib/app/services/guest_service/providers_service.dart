@@ -1,6 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart';
+import 'package:dio/dio.dart' as dio;
+
 import 'package:webinar/app/models/category_model.dart';
 import 'package:webinar/app/models/meeting_times_model.dart';
 import 'package:webinar/app/models/profile_model.dart';
@@ -20,25 +21,25 @@ class ProvidersService{
     List<UserModel> data = [];
     try{
 
-      String url = '${Constants.baseUrl}providers/instructors?p=';
+      String url = '${Constants.apiUrl}Teacher/GetTeachersForHomePage';
 
-      if(discount) url += '&discount=1';
-      if(downloadable) url += '&downloadable=1';
-      if(freeMeetings) url += '&free_meetings=1';
-      if(availableForMeetings) url += '&available_for_meetings=1';
+      //if(discount) url += '&discount=1';
+      //if(downloadable) url += '&downloadable=1';
+      //if(freeMeetings) url += '&free_meetings=1';
+      //if(availableForMeetings) url += '&available_for_meetings=1';
 
-      if(sort != null) url += '&sort=$sort';
+      //if(sort != null) url += '&sort=$sort';
 
-      if(categories.isNotEmpty){
-        for (var element in categories) {
-          url += '&categories[]=${element.id}';
-        }
-      }
+      // if(categories.isNotEmpty){
+      //   for (var element in categories) {
+      //     url += '&categories[]=${element.id}';
+      //   }
+      // }
 
 
-      Response res = await httpGet(url);
+      dio.Response res = await dioGet(url);
         
-      var jsonRes = jsonDecode(res.body);
+      /*var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success']) {
         jsonRes['data']['users'].forEach((json){
@@ -48,7 +49,21 @@ class ProvidersService{
         return data;
       }else{
         return data;
+      }*/
+
+      var jsonResponse = res.data['data'];
+      if(jsonResponse.length>0){
+
+       jsonResponse.forEach((json){
+          data.add(UserModel.fromJson(json));
+        });
+       return data;
+
+      }else{
+        return data;
       }
+
+
 
 
     }catch(e){

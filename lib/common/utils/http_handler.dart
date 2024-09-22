@@ -243,6 +243,48 @@ Future<Response> httpGetWithToken(dynamic url,{bool isRedirectingStatusCode=true
 
 
 
+Future<dio.Response> dioGet(String url,{Map<String, String> headers = const {},bool isRedirectingStatusCode=true, bool isMaintenance=false, bool isSendToken=false}) async {
+  
+  // var myBody = body;
+  // if(body.runtimeType is! dio.FormData){
+  //   // try{
+  //   //   myBody = json.encode(body);
+  //   // }catch(e){}
+  // }
+  
+
+  if(headers.isEmpty){
+    headers = {
+      'Accept': '*/*',
+      'Content-Type': 'application/json',
+      //'x-api-key' : Constants.apiKey,
+      //'x-locale' : locator<AppLanguage>().currentLanguage.toLowerCase(),
+    };
+  }
+
+  var res = await locator<dio.Dio>().get(
+    url, 
+    options: dio.Options(
+      headers: headers
+    )
+  ).timeout(const Duration(seconds: 30));
+
+  // print(res.data.toString());
+  // log(utf8.decode(res.bodyBytes));
+
+  if (res.statusCode == 401) {
+    if(isRedirectingStatusCode){
+      nextRoute(
+        LoginPage.pageName,
+        isClearBackRoutes: true
+      );
+    }
+    return res;
+  } else {
+    return res;
+  }
+}
+
 
 Future<dio.Response> dioPost(String url, dynamic body,{Map<String, String> headers = const {},bool isRedirectingStatusCode=true}) async {
   

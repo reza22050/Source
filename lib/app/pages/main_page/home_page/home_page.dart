@@ -258,8 +258,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   // Featured Classes
                                   Column(
                                     children: [
-                                      HomeWidget.titleAndMore(appText.featuredClasses, isViewAll: false),
+                                      //HomeWidget.titleAndMore(appText.featuredClasses, isViewAll: false),
                 
+                                      space(30),
+
                                       if(featuredListData.isNotEmpty || isLoadingFeaturedListData)...{
                 
                                         SizedBox(
