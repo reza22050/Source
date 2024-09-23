@@ -288,7 +288,9 @@ Future<dio.Response> dioGet(String url,
 
 Future<dio.Response> dioPost(String url, dynamic body,
     {Map<String, String> headers = const {},
-    bool isRedirectingStatusCode = true}) async {
+    bool isRedirectingStatusCode = true, 
+    List<String>? arrayKeys
+    }) async {
   // var myBody = body;
   // if(body.runtimeType is! dio.FormData){
   //   // try{
@@ -311,13 +313,16 @@ Future<dio.Response> dioPost(String url, dynamic body,
   //   jsonData[field.key] = field.value;
   // });
 
-  List<String> arrayKeys = ['teacherIds', 'gradeIds'];
+  //List<String> arrayKeys = ['teacherIds', 'gradeIds'];
 
 body.fields.forEach((field) {
-  if (arrayKeys.contains(field.key)) {
-    // Convert string to List using jsonDecode
-    var valueList = jsonDecode(field.value);
-    jsonData[field.key] = valueList;
+  if (arrayKeys != null &&  arrayKeys!.contains(field.key)) {
+    if(field.value != "null"){
+        jsonData[field.key] = jsonDecode(field.value);
+    }
+    else{
+      jsonData[field.key] = [];
+    }
   } else {
     jsonData[field.key] = field.value;
   }

@@ -58,15 +58,15 @@ class SingleCourseWidget{
                   courseOption(orange50, AppAssets.certificateSvg, appText.certificate, appText.included),
                 },
                 
-                if(courseData.quizzes.isNotEmpty)...{
+                if(courseData.quizzes.isNotEmpty || true)...{
                   courseOption(green9D, AppAssets.quizSvg, appText.quiz, appText.included),
                 },
                 
-                if(courseData.support ?? false)...{
+                if(courseData.support ?? true)...{
                   courseOption(blueFE, AppAssets.supportedSvg, appText.supported, appText.class_),
                 },
                 
-                if(courseData.isDownloadable ?? false)...{
+                if(courseData.isDownloadable ?? true)...{
                   courseOption(green50, AppAssets.downloadableSvg, appText.downloadable, appText.content),
                 },
               ],
@@ -99,7 +99,8 @@ class SingleCourseWidget{
             child: SingleChildScrollView(
               physics: const NeverScrollableScrollPhysics(),
               child: HtmlWidget(
-                courseData.description ?? ''
+                  courseData.description ?? '', 
+                  textStyle: style12Regular(),
               ),
             ),
           ),
@@ -172,7 +173,7 @@ class SingleCourseWidget{
                 
                 SingleCourseWidget.courseStatus(
                   appText.duration, 
-                  "${durationToString(courseData.duration ?? 0)} ${appText.hours}", 
+                  "${courseData.duration} ${appText.hours}", 
                   AppAssets.timeCircleSvg,
                   width: (getSize().width * .5) - 42,
                 ),
@@ -1398,7 +1399,8 @@ class SingleCourseWidget{
                       DateTime.fromMillisecondsSinceEpoch((courseData.startDate ?? 0) * 1000, isUtc: true).month,
                       DateTime.fromMillisecondsSinceEpoch((courseData.startDate ?? 0) * 1000, isUtc: true).day,
                       DateTime.fromMillisecondsSinceEpoch((courseData.startDate ?? 0) * 1000, isUtc: true).hour,
-                      (DateTime.fromMillisecondsSinceEpoch((courseData.startDate ?? 0) * 1000, isUtc: true).minute + (courseData.duration ?? 0)),
+                      (DateTime.fromMillisecondsSinceEpoch((courseData.startDate ?? 0) * 1000, isUtc: true).minute),
+                      //(DateTime.fromMillisecondsSinceEpoch((courseData.startDate ?? 0) * 1000, isUtc: true).minute + (courseData.duration ?? 0)),
                     );
 
                     final Event event = Event(

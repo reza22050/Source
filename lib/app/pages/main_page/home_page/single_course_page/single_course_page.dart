@@ -78,7 +78,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
     getData();
     
 
@@ -198,7 +198,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
   }
 
   getContent() async {
-    contentData = await CourseService.getContent(courseData!.id!);
+    //contentData = await CourseService.getContent(courseData!.id!);
 
     setState(() {});
   }
@@ -300,22 +300,22 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                             Row(
                               children: [
 
-                                ratingBar(courseData?.rate?.toString() ?? '0'),
+                                ratingBar(courseData?.rate?.toString() ?? '5'),
 
                                 space(0,width: 4),
 
-                                Container(
-                                  padding: padding(horizontal: 6,vertical: 3),
-                                  decoration: BoxDecoration(
-                                    color: greyE7,
-                                    borderRadius: borderRadius()
-                                  ),
+                                // Container(
+                                //   padding: padding(horizontal: 6,vertical: 3),
+                                //   decoration: BoxDecoration(
+                                //     color: greyE7,
+                                //     borderRadius: borderRadius()
+                                //   ),
 
-                                  child: Text(
-                                    courseData?.reviewsCount?.toString() ?? '',
-                                    style: style10Regular().copyWith(color: greyB2),
-                                  ),
-                                )
+                                //   child: Text(
+                                //     courseData?.reviewsCount?.toString() ?? '500',
+                                //     style: style10Regular().copyWith(color: greyB2),
+                                //   ),
+                                // )
 
                               ],
                             ),
@@ -399,15 +399,15 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                           height: 32,
                         ),
                         
-                        Tab(
-                          text: appText.reviews,
-                          height: 32,
-                        ),
+                        // Tab(
+                        //   text: appText.reviews,
+                        //   height: 32,
+                        // ),
                         
-                        Tab(
-                          text: appText.comments,
-                          height: 32,
-                        ),
+                        // Tab(
+                        //   text: appText.comments,
+                        //   height: 32,
+                        // ),
 
                       ]),
                     ),

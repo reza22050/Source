@@ -35,7 +35,7 @@ class SingleCourseModel {
   int? coursePageTax;
   var priceWithDiscount;
   var discountAmount;
-  int? duration;
+  String? duration;
   UserModel? teacher;
   int? studentsCount;
   String? rate;
@@ -162,10 +162,10 @@ class SingleCourseModel {
     auth = json['auth'];
     can = json['can'] != null ? Can.fromJson(json['can']) : null;
     canViewError = json['can_view_error'];
-    id = json['id'];
+    id = json['courseInfo']['courseId'];
     status = json['status'];
     label = json['label'];
-    title = json['title'];
+    title = json['courseInfo']['title'];
     type = json['type'];
     link = json['link'];
     accessDays = json['access_days'];
@@ -186,8 +186,8 @@ class SingleCourseModel {
     
     activeSpecialOffer = json['active_special_offer'] != null ? ActiveSpecialOffer.fromJson(json['active_special_offer']) : null;
 
-    duration = int.tryParse( json['duration']?.toString() ?? '0');
-    teacher = json['teacher'] != null ? UserModel.fromJson(json['teacher']) : null;
+    duration = json['courseInfo']['courseVideoTime']?.toString() ?? '00:00:00';
+    teacher = json['courseTeachers'][0] != null ? UserModel.fromJson(json['courseTeachers'][0] ) : null;
     studentsCount = json['students_count'];
     rate = json['rate']?.toString();
     rateType = json['rate_type'] != null
@@ -204,7 +204,7 @@ class SingleCourseModel {
     capacity = json['capacity'];
     support = json['support'];
     subscribe = json['subscribe'];
-    description = json['description'];
+    description = json['courseInfo']['description'];
 
     if (json['faqs'] != null) {
       faqs = <Faqs>[];

@@ -45,7 +45,7 @@ class AppData {
 
   static Future getCurrency() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String data = prefs.getString('currency') ?? 'USD';
+    String data = prefs.getString('currency') ?? 'تومان';
     return data;
   }
 

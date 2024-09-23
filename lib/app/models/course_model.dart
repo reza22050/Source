@@ -15,7 +15,7 @@ class CourseModel {
   String? label;
   String? title;
   String? description;
-  String? type;
+  String? type = 'course';
   String? link;
   int? accessDays;
   int? salesCountNumber;

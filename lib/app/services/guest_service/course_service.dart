@@ -17,524 +17,419 @@ import '../../../common/utils/error_handler.dart';
 import '../../../common/components.dart';
 import '../../models/single_content_model.dart';
 
-class CourseService{
-
-  static Future<List<CourseModel>> getAll({ required int offset,
-  List<int>? gradeIds , 
-  List<int>? teacherIds , 
-  String? search,
-  int? typeSort,
-  int? sort,
-  int pageIndex = 1,
-  int pageSize = 9,
-  bool upcoming=false, bool free=false, bool discount=false, bool downloadable=false, String? type, String? cat, bool reward=false, bool bundle=false, List<int>? filterOption, })async{
+class CourseService {
+  static Future<List<CourseModel>> getAll({
+    required int offset,
+    List<int>? gradeIds,
+    List<int>? teacherIds,
+    String? search,
+    int? typeSort,
+    int? sort,
+    int pageIndex = 1,
+    int pageSize = 9,
+    bool upcoming = false,
+    bool free = false,
+    bool discount = false,
+    bool downloadable = false,
+    String? type,
+    String? cat,
+    bool reward = false,
+    bool bundle = false,
+    List<int>? filterOption,
+  }) async {
     List<CourseModel> data = [];
-     try{
+    try {
       String url = '${Constants.apiUrl}Course/GetCourseCard';
-      gradeIds ??= [1,2];
-      teacherIds ??= [1];
-
- /*   dio.FormData formData = dio.FormData.fromMap({
-       "gradeIds": jsonEncode(gradeIds),
-       "teacherIds": jsonEncode(teacherIds),
-       "typeSort": typeSort, 
-        "sort": sort, 
-        "pageIndex": pageIndex, 
-        "pageSize": pageSize,
-        "search": search
-      });*/
-      
-
+      //gradeIds ??= [1,2];
+      //teacherIds ??= [1];
 
       dio.FormData formData = dio.FormData.fromMap({
-  //"request": jsonEncode({
-    "gradeIds": jsonEncode(gradeIds),
-    "teacherIds": jsonEncode(teacherIds),
-    //"gradeIds": gradeIds,
-    //"teacherIds": teacherIds,
-    "typeSort": 1,
-    "sort": sort ?? 1,
-    "pageIndex": pageIndex,
-    "pageSize": pageSize,
-    "search": search
- // }),
-});
+        "gradeIds": jsonEncode(gradeIds),
+        "teacherIds": jsonEncode(teacherIds),
+        "typeSort": 1,
+        "sort": sort ?? 1,
+        "pageIndex": pageIndex,
+        "pageSize": pageSize,
+        "search": search
+      });
 
-     dio.Response res = await dioPost(
-        url,
-        formData
-      );
+      dio.Response res = await dioPost(url, formData, arrayKeys: ['teacherIds', 'gradeIds']);
 
       var jsonResponse = res.data;
       if (jsonResponse['isSuccess'] ?? false) {
+        jsonResponse['data']['data'].forEach((json) {
+          data.add(CourseModel.fromJson(json));
+        });
 
-          jsonResponse['data']['data'].forEach((json){
-            data.add(CourseModel.fromJson(json));
-          });
-
-          log('course count : ${data.length}');
-          return data;
-        }
-      else{
+        log('course count : ${data.length}');
+        return data;
+      } else {
         return data;
       }
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
 
-
-  static Future<SingleCourseModel?> getOverviewCourseData(int id,bool isBundle,{bool isPrivate=false})async{
-    try{
-
-      String url = '${Constants.baseUrl}${isPrivate ? 'panel/webinars' : isBundle ? 'panel/bundles' : 'panel/webinars'}/$id';
+  static Future<SingleCourseModel?> getOverviewCourseData(int id, bool isBundle,
+      {bool isPrivate = false}) async {
+    try {
+      String url =
+          '${Constants.baseUrl}${isPrivate ? 'panel/webinars' : isBundle ? 'panel/bundles' : 'panel/webinars'}/$id';
       print(url);
 
-      Response res = await httpGet(
-        url,
-        isSendToken: true
-      );
-        
+      Response res = await httpGet(url, isSendToken: true);
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success'] ?? false) {
-        return SingleCourseModel.fromJson( 
-          isBundle 
-            ? jsonRes['data']['bundle'] 
-            : jsonRes['data']
-        );
-      }else{
+        return SingleCourseModel.fromJson(
+            isBundle ? jsonRes['data']['bundle'] : jsonRes['data']);
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonRes, readMessage: true);
         return null;
       }
+    } catch (e) {
+      return null;
+    }
+  }
 
+  static Future<SingleCourseModel?> getSingleCourseData(int id, bool isBundle,
+      {bool isPrivate = false}) async {
+     try{
+
+    String url = '${Constants.apiUrl}Course/GetCourseDetailsPublic';
+
+     dio.FormData formData = dio.FormData.fromMap({
+
+        "courseId": id,
+      });
+      
+
+    dio.Response res = await dioPost(url,formData );
+
+    var jsonRes = res.data['data'];
+    if (res.data['isSuccess'] ?? false) {
+      return SingleCourseModel.fromJson(
+          isBundle ? jsonRes['bundle'] : jsonRes);
+    } else {
+      ErrorHandler().showError(ErrorEnum.error, jsonRes, readMessage: true);
+      return null;
+    }
 
     }catch(e){
       return null;
     }
   }
 
-  static Future<SingleCourseModel?> getSingleCourseData(int id,bool isBundle,{bool isPrivate=false})async{
-    // try{
-
-      String url = '${Constants.baseUrl}${isPrivate ? 'panel/webinars' : isBundle ? 'bundles' : 'courses'}/$id';
-      print(url);
-
-      Response res = await httpGet(
-        url,
-        isSendToken: true
-      );
-        
-      var jsonRes = jsonDecode(res.body);
-
-      if (jsonRes['success'] ?? false) {
-        return SingleCourseModel.fromJson( 
-          isBundle 
-            ? jsonRes['data']['bundle'] 
-            : jsonRes['data']
-        );
-      }else{
-        ErrorHandler().showError(ErrorEnum.error, jsonRes, readMessage: true);
-        return null;
-      }
-
-
-    // }catch(e){
-    //   return null;
-    // }
-  }
-
-  static Future<List<CourseModel>> featuredCourse({String? cat,})async{
+  static Future<List<CourseModel>> featuredCourse({
+    String? cat,
+  }) async {
     List<CourseModel> data = [];
-    try{
-
+    try {
       String url = '${Constants.apiUrl}Slider/GetActiveSliders';
 
       //if(cat != null) url += '?cat=$cat';
 
-
       Response res = await httpGet(url, isMaintenance: true);
-        
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['isSuccess']) {
-        jsonRes['data'].forEach((json){
+        jsonRes['data'].forEach((json) {
           data.add(CourseModel.fromJson(json));
         });
 
         log('featured course count : ${data.length}');
         return data;
-      }else{
+      } else {
         return data;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
-  
 
-  static Future<List<CourseModel>> getBundleWebinars(int bundleId)async{
+  static Future<List<CourseModel>> getBundleWebinars(int bundleId) async {
     List<CourseModel> data = [];
-    try{
-
+    try {
       String url = '${Constants.baseUrl}bundles/$bundleId/webinars';
-
 
       Response res = await httpGet(url, isMaintenance: true);
-        
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success']) {
-        jsonRes['data']['webinars'].forEach((json){
+        jsonRes['data']['webinars'].forEach((json) {
           data.add(CourseModel.fromJson(json));
         });
 
         return data;
-      }else{
+      } else {
         return data;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
-  
-  static Future<List<CourseModel>> bundleCourses(int bundleId)async{
-    List<CourseModel> data = [];
-    try{
 
+  static Future<List<CourseModel>> bundleCourses(int bundleId) async {
+    List<CourseModel> data = [];
+    try {
       String url = '${Constants.baseUrl}bundles/$bundleId/webinars';
 
-
-
       Response res = await httpGet(url);
-        
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success']) {
-        jsonRes['data']['webinars'].forEach((json){
+        jsonRes['data']['webinars'].forEach((json) {
           data.add(CourseModel.fromJson(json));
         });
 
         log('featured course count : ${data.length}');
         return data;
-      }else{
+      } else {
         return data;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
 
-  static Future<List<String>> getReasons()async{
+  static Future<List<String>> getReasons() async {
     List<String> data = [];
-    try{
-
+    try {
       String url = '${Constants.baseUrl}courses/reports/reasons';
 
-
-
-
       Response res = await httpGet(url);
-        
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success']) {
-        jsonRes['data'].forEach((json){
+        jsonRes['data'].forEach((json) {
           data.add(json);
         });
 
         PublicData.reasonsData = data;
 
         return data;
-      }else{
+      } else {
         return data;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
 
-  static Future<List<NoticeModel>> getNotices(int id)async{
+  static Future<List<NoticeModel>> getNotices(int id) async {
     List<NoticeModel> data = [];
-    try{
-
+    try {
       String url = '${Constants.baseUrl}panel/webinars/$id/noticeboards';
 
-
-
-
       Response res = await httpGetWithToken(url);
-        
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success']) {
-        jsonRes['data'].forEach((json){
+        jsonRes['data'].forEach((json) {
           data.add(NoticeModel.fromJson(json));
         });
 
-
         return data;
-      }else{
+      } else {
         return data;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
 
-  static Future<bool> reportCourse(String reason,int courseId,String message)async{
-   
-    try{
-
+  static Future<bool> reportCourse(
+      String reason, int courseId, String message) async {
+    try {
       String url = '${Constants.baseUrl}courses/$courseId/report';
 
+      Response res =
+          await httpPostWithToken(url, {"reason": reason, "message": message});
 
-      Response res = await httpPostWithToken(
-        url,
-        {
-          "reason" : reason,
-          "message" : message
-        }
-      );
-        
       var jsonResponse = jsonDecode(res.body);
 
-      if(jsonResponse['success']){
+      if (jsonResponse['success']) {
         showSnackBar(ErrorEnum.success, jsonResponse['message']?.toString());
         return true;
-      }else{
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return false;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return false;
     }
   }
 
-  static Future<bool> toggle(int courseId,String itemName,String itemId,bool status)async{
-   
-    try{
-
+  static Future<bool> toggle(
+      int courseId, String itemName, String itemId, bool status) async {
+    try {
       String url = '${Constants.baseUrl}courses/$courseId/toggle';
 
-
       Response res = await httpPostWithToken(
-        url,
-        {
-          "item" : itemName,
-          "item_id" : itemId,
-          "status" : status
-        }
-      );
-        
+          url, {"item": itemName, "item_id": itemId, "status": status});
+
       var jsonResponse = jsonDecode(res.body);
       print(jsonResponse);
 
-      if(jsonResponse['success']){
+      if (jsonResponse['success']) {
         return true;
-      }else{
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return false;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return false;
     }
   }
 
-  static Future<bool> addFavorite(int courseId, bool isBundle)async{
-   
-    try{
-
+  static Future<bool> addFavorite(int courseId, bool isBundle) async {
+    try {
       String url = '${Constants.baseUrl}panel/favorites/toggle2';
 
       Response res = await httpPostWithToken(
-        url,
-        {
-          "item" : isBundle ? 'bundle' : 'webinar',
-          "id" : courseId
-        }
-      );
-        
+          url, {"item": isBundle ? 'bundle' : 'webinar', "id": courseId});
+
       var jsonResponse = jsonDecode(res.body);
 
-      if(jsonResponse['success']){
-        ErrorHandler().showError(ErrorEnum.success, jsonResponse, readMessage: true);
+      if (jsonResponse['success']) {
+        ErrorHandler()
+            .showError(ErrorEnum.success, jsonResponse, readMessage: true);
         return true;
-      }else{
-        ErrorHandler().showError(ErrorEnum.error, jsonResponse, readMessage: true);
+      } else {
+        ErrorHandler()
+            .showError(ErrorEnum.error, jsonResponse, readMessage: true);
         return false;
       }
-
-
-    }catch(e){
+    } catch (e) {
       return false;
     }
   }
 
-  static Future<(List<CourseModel> courseData, List<UserModel> usersData, List<UserModel> organizationsData)> search(String text)async{
+  static Future<
+      (
+        List<CourseModel> courseData,
+        List<UserModel> usersData,
+        List<UserModel> organizationsData
+      )> search(String text) async {
     List<CourseModel> courseData = [];
     List<UserModel> usersData = [];
     List<UserModel> organizationsData = [];
 
-    try{
-
+    try {
       String url = '${Constants.baseUrl}search?search=$text';
 
-
-
       Response res = await httpGet(url);
-        
+
       var jsonRes = jsonDecode(res.body);
 
       if (jsonRes['success']) {
-        
-        jsonRes['data']['webinars']['webinars'].forEach((json){
+        jsonRes['data']['webinars']['webinars'].forEach((json) {
           courseData.add(CourseModel.fromJson(json));
         });
-        
-        jsonRes['data']['users']['users'].forEach((json){
+
+        jsonRes['data']['users']['users'].forEach((json) {
           usersData.add(UserModel.fromJson(json));
         });
-        
-        jsonRes['data']['organizations']['organizations'].forEach((json){
+
+        jsonRes['data']['organizations']['organizations'].forEach((json) {
           organizationsData.add(UserModel.fromJson(json));
         });
 
-        return (courseData,usersData,organizationsData);
-      }else{
-        return (courseData,usersData,organizationsData);
+        return (courseData, usersData, organizationsData);
+      } else {
+        return (courseData, usersData, organizationsData);
       }
-
-
-    }catch(e){
-      return (courseData,usersData,organizationsData);
+    } catch (e) {
+      return (courseData, usersData, organizationsData);
     }
   }
-
-
 
   static Future<List<ContentModel>> getContent(int courseId) async {
     List<ContentModel> data = [];
 
-    try{
+    try {
       String url = '${Constants.baseUrl}courses/$courseId/content';
 
-      Response res = await httpGetWithToken(
-        url, 
-        isRedirectingStatusCode: false
-      );
-
+      Response res =
+          await httpGetWithToken(url, isRedirectingStatusCode: false);
 
       var jsonResponse = jsonDecode(res.body);
 
-
-      if(jsonResponse['success']){
-
-        jsonResponse['data'].forEach((json){
+      if (jsonResponse['success']) {
+        jsonResponse['data'].forEach((json) {
           data.add(ContentModel.fromJson(json));
         });
 
         return data;
-      }else{
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return data;
       }
-
-    }catch(e){
+    } catch (e) {
       return data;
     }
   }
 
   static Future<String?> getContentJSON(int courseId) async {
-
-    try{
+    try {
       String url = '${Constants.baseUrl}courses/$courseId/content';
 
-      Response res = await httpGetWithToken(
-        url, 
-        isRedirectingStatusCode: false
-      );
+      Response res =
+          await httpGetWithToken(url, isRedirectingStatusCode: false);
 
       var jsonResponse = jsonDecode(res.body);
 
-      if(jsonResponse['success']){
+      if (jsonResponse['success']) {
         return jsonEncode(jsonResponse['data'] ?? {});
-      }else{
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return null;
       }
-
-    }catch(e){
+    } catch (e) {
       return null;
     }
   }
 
-
-
   static Future<SingleContentModel?> getSingleContent(String url) async {
-
-    try{
-
-      Response res = await httpGetWithToken(
-        url, 
-        isRedirectingStatusCode: false
-      );
-
+    try {
+      Response res =
+          await httpGetWithToken(url, isRedirectingStatusCode: false);
 
       var jsonResponse = jsonDecode(res.body);
 
-
-      if(jsonResponse['success'] ?? false){
-
+      if (jsonResponse['success'] ?? false) {
         return SingleContentModel.fromJson(jsonResponse['data']);
-      }else{
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return null;
       }
-
-    }catch(e){
+    } catch (e) {
       return null;
     }
   }
 
   static Future<String?> getSingleContentJSON(String url) async {
-
-    try{
-
-      Response res = await httpGetWithToken(
-        url, 
-        isRedirectingStatusCode: false
-      );
-
+    try {
+      Response res =
+          await httpGetWithToken(url, isRedirectingStatusCode: false);
 
       var jsonResponse = jsonDecode(res.body);
 
-      if(jsonResponse['success'] ?? false){
-
+      if (jsonResponse['success'] ?? false) {
         return res.body;
-      }else{
+      } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return null;
       }
-
-    }catch(e){
+    } catch (e) {
       return null;
     }
   }
-
 }

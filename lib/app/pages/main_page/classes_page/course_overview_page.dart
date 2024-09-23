@@ -194,7 +194,7 @@ class _CourseOverviewPageState extends State<CourseOverviewPage> {
             
                             SingleCourseWidget.courseStatus(
                               appText.duration, 
-                              '${formatHHMMSS((course?.duration ?? 0))} ${appText.hours}', 
+                              '${course?.duration} ${appText.hours}', 
                               AppAssets.tickSquareSvg,
                               width: (getSize().width * .5) - 42,
                             ),
