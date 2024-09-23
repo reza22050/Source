@@ -40,9 +40,9 @@ import '../app/models/course_model.dart';
 
 Widget courseSliderItem(CourseModel courseData,{int horizontalPadding=20}){
   return GestureDetector(
-  onTap: (){
-    nextRoute(SingleCoursePage.pageName,arguments: [courseData.id, courseData.type == 'bundle']);
-  },
+  // onTap: (){
+  //   nextRoute(SingleCoursePage.pageName,arguments: [courseData.id, courseData.type == 'bundle']);
+  // },
   child: Container(
     
     padding: padding(horizontal: horizontalPadding.toDouble()),
@@ -82,32 +82,32 @@ Widget courseSliderItem(CourseModel courseData,{int horizontalPadding=20}){
               children: [
                 
                 // price
-                Align(
-                  alignment: AlignmentDirectional.topEnd,
-                  child: Container(
-                    margin: padding(horizontal: 12,vertical: 12),
-                    padding: padding(horizontal: 12,vertical: 6),
+                // Align(
+                //   alignment: AlignmentDirectional.topEnd,
+                //   child: Container(
+                //     margin: padding(horizontal: 12,vertical: 12),
+                //     padding: padding(horizontal: 12,vertical: 6),
 
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: borderRadius(radius: 10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(.05),
-                          offset: const Offset(0, 3),
-                          blurRadius: 10
-                        )
-                      ]
-                    ),
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       borderRadius: borderRadius(radius: 10),
+                //       boxShadow: [
+                //         BoxShadow(
+                //           color: Colors.black.withOpacity(.05),
+                //           offset: const Offset(0, 3),
+                //           blurRadius: 10
+                //         )
+                //       ]
+                //     ),
 
-                    child: Text(
-                      (courseData.price == 0)
-                        ? appText.free
-                        : CurrencyUtils.calculator(courseData.price ?? 0),
-                      style: style14Regular().copyWith(color: green77()),
-                    ),
-                  ),
-                ),
+                //     child: Text(
+                //       (courseData.price == 0)
+                //         ? appText.free
+                //         : CurrencyUtils.calculator(courseData.price ?? 0),
+                //       style: style14Regular().copyWith(color: green77()),
+                //     ),
+                //   ),
+                // ),
 
                 const Spacer(),
 
@@ -117,53 +117,53 @@ Widget courseSliderItem(CourseModel courseData,{int horizontalPadding=20}){
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       
-                      SizedBox(
-                        width: getSize().width,
-                        child: Text(
-                          courseData.title ?? '',
-                          style: style16Bold().copyWith(color: Colors.white),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: getSize().width,
+                      //   child: Text(
+                      //     courseData.title ?? '',
+                      //     style: style16Bold().copyWith(color: Colors.white),
+                      //   ),
+                      // ),
 
                       space(4),
 
-                      ratingBar(double.parse(courseData.rate ?? '0').round().toString()),
+                      // ratingBar(double.parse(courseData.rate ?? '0').round().toString()),
 
-                      space(10),
+                      // space(10),
 
                       // info
-                      Row(
-                        children: [
+                      // Row(
+                      //   children: [
                           
-                          ClipRRect(
-                            borderRadius: borderRadius(radius: 50),
-                            child: fadeInImage(
-                              courseData.teacher?.avatar ?? '', 
-                              20, 
-                              20
-                            ),
-                          ),
+                      //     ClipRRect(
+                      //       borderRadius: borderRadius(radius: 50),
+                      //       child: fadeInImage(
+                      //         courseData.teacher?.avatar ?? '', 
+                      //         20, 
+                      //         20
+                      //       ),
+                      //     ),
 
-                          space(0,width: 4),
+                      //     space(0,width: 4),
 
-                          Text(
-                            courseData.teacher?.fullName ?? '',
-                            style: style10Regular().copyWith(color: Colors.white),
-                          ),
+                      //     Text(
+                      //       courseData.teacher?.fullName ?? '',
+                      //       style: style10Regular().copyWith(color: Colors.white),
+                      //     ),
 
 
-                          space(0,width: 12),
+                      //     space(0,width: 12),
 
-                          SvgPicture.asset(AppAssets.timeSvg),
+                      //     SvgPicture.asset(AppAssets.timeSvg),
 
-                          space(0,width: 4),
+                      //     space(0,width: 4),
 
-                          Text(
-                            '${durationToString(courseData.duration ?? 0)} ${appText.hours}',
-                            style: style10Regular().copyWith(color: Colors.white),
-                          )
-                        ],
-                      )
+                      //     Text(
+                      //       '${durationToString(courseData.duration ?? 0)} ${appText.hours}',
+                      //       style: style10Regular().copyWith(color: Colors.white),
+                      //     )
+                      //   ],
+                      // )
 
                     ],
                   ),

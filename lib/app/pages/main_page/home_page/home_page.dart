@@ -151,14 +151,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
       });
     });
 
-    CourseService.getAll(offset: 0, sort: 'newest').then((value) {
+    CourseService.getAll(offset: 0, sort:3 /*'newest'*/).then((value) {
       setState(() {
         isLoadingNewsetListData=false;
         newsetListData = value;
       });
     });
 
-    CourseService.getAll(offset: 0, sort: 'best_rates').then((value) {
+    CourseService.getAll(offset: 0, sort: 1 /*'best_rates'*/).then((value) {
       setState(() {
         isLoadingBestRatedListData = false;
         bestRatedListData = value;
@@ -166,26 +166,26 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
     });
 
     
-    CourseService.getAll(offset: 0, sort: 'bestsellers').then((value) {
-      setState(() {
-        isLoadingBestSellingListData = false;
-        bestSellingListData = value;
-      });
-    });
+    // CourseService.getAll(offset: 0, sort: 2 /*'bestsellers'*/).then((value) {
+    //   setState(() {
+    //     isLoadingBestSellingListData = false;
+    //     bestSellingListData = value;
+    //   });
+    // });
     
-    CourseService.getAll(offset: 0, discount: true).then((value) {
-      setState(() {
-        isLoadingDiscountListData = false;
-        discountListData = value;
-      });
-    });
+    // CourseService.getAll(offset: 0, discount: true).then((value) {
+    //   setState(() {
+    //     isLoadingDiscountListData = false;
+    //     discountListData = value;
+    //   });
+    // });
     
-    CourseService.getAll(offset: 0, free: true).then((value) {
-      setState(() {
-        isLoadingFreeListData = false;
-        freeListData = value;
-      });
-    });
+    // CourseService.getAll(offset: 0, free: true).then((value) {
+    //   setState(() {
+    //     isLoadingFreeListData = false;
+    //     freeListData = value;
+    //   });
+    // });
   }
 
 
@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                     children: [
                                       HomeWidget.titleAndMore(appText.newestClasses, onTapViewAll: (){
                                         locator<FilterCourseProvider>().clearFilter();
-                                        locator<FilterCourseProvider>().sort = 'newest';
+                                        locator<FilterCourseProvider>().sort = 2;
                                         nextRoute(FilterCategoryPage.pageName);
                                       }),
                 
@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                 
                                       HomeWidget.titleAndMore(appText.bestRated, onTapViewAll: (){
                                         locator<FilterCourseProvider>().clearFilter();
-                                        locator<FilterCourseProvider>().sort = 'best_rates';
+                                        locator<FilterCourseProvider>().sort = 1;
                                         nextRoute(FilterCategoryPage.pageName);
                                       }),
                 
@@ -467,166 +467,166 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin{
                                   */
                 
                 
-                                  space(22),
+                                  // space(22),
                 
-                                  // by spending points
-                                  Container(
-                                    padding: padding(horizontal: 16),
-                                    margin: padding(),
-                                    width: getSize().width,
-                                    height: 165,
+                                  // // by spending points
+                                  // Container(
+                                  //   padding: padding(horizontal: 16),
+                                  //   margin: padding(),
+                                  //   width: getSize().width,
+                                  //   height: 165,
                 
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: borderRadius(),
-                                    ),
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.white,
+                                  //     borderRadius: borderRadius(),
+                                  //   ),
                 
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
+                                  //   child: Row(
+                                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //     children: [
                 
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
+                                  //       Column(
+                                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                                  //         mainAxisAlignment: MainAxisAlignment.center,
+                                  //         children: [
                 
-                                            Text(
-                                              appText.freeCourses,
-                                              style: style20Bold(),
-                                            ),
+                                  //           Text(
+                                  //             appText.freeCourses,
+                                  //             style: style20Bold(),
+                                  //           ),
                 
-                                            space(4),
+                                  //           space(4),
                                             
-                                            Text(
-                                              appText.bySpendingPoints,
-                                              style: style12Regular().copyWith(color: greyB2),
-                                            ),
+                                  //           Text(
+                                  //             appText.bySpendingPoints,
+                                  //             style: style12Regular().copyWith(color: greyB2),
+                                  //           ),
                                             
-                                            space(8),
+                                  //           space(8),
                 
-                                            button(
-                                              onTap: (){
-                                                locator<FilterCourseProvider>().clearFilter();
-                                                locator<FilterCourseProvider>().rewardCourse = true;
-                                                nextRoute(FilterCategoryPage.pageName);
-                                              }, 
-                                              width: 75, 
-                                              height: 32, 
-                                              text: appText.view, 
-                                              bgColor: green77(), 
-                                              textColor: Colors.white,
-                                              raduis: 10
-                                            )
+                                  //           button(
+                                  //             onTap: (){
+                                  //               locator<FilterCourseProvider>().clearFilter();
+                                  //               locator<FilterCourseProvider>().rewardCourse = true;
+                                  //               nextRoute(FilterCategoryPage.pageName);
+                                  //             }, 
+                                  //             width: 75, 
+                                  //             height: 32, 
+                                  //             text: appText.view, 
+                                  //             bgColor: green77(), 
+                                  //             textColor: Colors.white,
+                                  //             raduis: 10
+                                  //           )
                 
-                                          ],
-                                        ),
-                
-                
-                
-                                        SvgPicture.asset(AppAssets.pointsMedalSvg)
+                                  //         ],
+                                  //       ),
                 
                 
-                                      ],
-                                    ),
-                                  ),
                 
-                                  space(10),
+                                  //       SvgPicture.asset(AppAssets.pointsMedalSvg)
                 
                 
-                                  // Best Selling
-                                  Column(
-                                    children: [
-                                      HomeWidget.titleAndMore(appText.bestSelling, onTapViewAll: (){
-                                        locator<FilterCourseProvider>().clearFilter();
-                                        locator<FilterCourseProvider>().sort = 'bestsellers';
-                                        nextRoute(FilterCategoryPage.pageName);
-                                      }),
+                                  //     ],
+                                  //   ),
+                                  // ),
                 
-                                      SizedBox(
-                                        width: getSize().width,
-                                        child: SingleChildScrollView(
-                                          physics: const BouncingScrollPhysics(),
-                                          padding: padding(),
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: List.generate( isLoadingBestSellingListData ? 3 : bestSellingListData.length, (index) {
-                                              return isLoadingBestSellingListData
-                                                ? courseItemShimmer()
-                                                : courseItem(
-                                                    bestSellingListData[index]
-                                                  );
-                                            }),
-                                          ),
-                                        ),
-                                      )
+                                  // space(10),
                 
-                                    ],
-                                  ),
+                
+                                  // // Best Selling
+                                  // Column(
+                                  //   children: [
+                                  //     HomeWidget.titleAndMore(appText.bestSelling, onTapViewAll: (){
+                                  //       locator<FilterCourseProvider>().clearFilter();
+                                  //       locator<FilterCourseProvider>().sort = 'bestsellers';
+                                  //       nextRoute(FilterCategoryPage.pageName);
+                                  //     }),
+                
+                                  //     SizedBox(
+                                  //       width: getSize().width,
+                                  //       child: SingleChildScrollView(
+                                  //         physics: const BouncingScrollPhysics(),
+                                  //         padding: padding(),
+                                  //         scrollDirection: Axis.horizontal,
+                                  //         child: Row(
+                                  //           children: List.generate( isLoadingBestSellingListData ? 3 : bestSellingListData.length, (index) {
+                                  //             return isLoadingBestSellingListData
+                                  //               ? courseItemShimmer()
+                                  //               : courseItem(
+                                  //                   bestSellingListData[index]
+                                  //                 );
+                                  //           }),
+                                  //         ),
+                                  //       ),
+                                  //     )
+                
+                                  //   ],
+                                  // ),
                                   
                 
 
-                                  if(isLoadingDiscountListData || discountListData.isNotEmpty)...{
+                                  // if(isLoadingDiscountListData || discountListData.isNotEmpty)...{
 
-                                    // Discounted Classes
-                                    Column(
-                                      children: [
-                                        HomeWidget.titleAndMore(appText.discountedClasses, onTapViewAll: (){
-                                          locator<FilterCourseProvider>().clearFilter();
-                                          locator<FilterCourseProvider>().discount = true;
-                                          nextRoute(FilterCategoryPage.pageName);
-                                        }),
+                                  //   // Discounted Classes
+                                  //   Column(
+                                  //     children: [
+                                  //       HomeWidget.titleAndMore(appText.discountedClasses, onTapViewAll: (){
+                                  //         locator<FilterCourseProvider>().clearFilter();
+                                  //         locator<FilterCourseProvider>().discount = true;
+                                  //         nextRoute(FilterCategoryPage.pageName);
+                                  //       }),
                   
-                                        SizedBox(
-                                          width: getSize().width,
-                                          child: SingleChildScrollView(
-                                            physics: const BouncingScrollPhysics(),
-                                            padding: padding(),
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              children: List.generate( isLoadingDiscountListData ? 3 : discountListData.length, (index) {
-                                                return isLoadingDiscountListData
-                                                  ? courseItemShimmer()
-                                                  : courseItem(
-                                                      discountListData[index],
-                                                    );
-                                              }),
-                                            ),
-                                          ),
-                                        )
+                                  //       SizedBox(
+                                  //         width: getSize().width,
+                                  //         child: SingleChildScrollView(
+                                  //           physics: const BouncingScrollPhysics(),
+                                  //           padding: padding(),
+                                  //           scrollDirection: Axis.horizontal,
+                                  //           child: Row(
+                                  //             children: List.generate( isLoadingDiscountListData ? 3 : discountListData.length, (index) {
+                                  //               return isLoadingDiscountListData
+                                  //                 ? courseItemShimmer()
+                                  //                 : courseItem(
+                                  //                     discountListData[index],
+                                  //                   );
+                                  //             }),
+                                  //           ),
+                                  //         ),
+                                  //       )
                   
-                                      ],
-                                    ),
-                                  },
+                                  //     ],
+                                  //   ),
+                                  // },
                 
-                                  // Free Classes
-                                  Column(
-                                    children: [
-                                      HomeWidget.titleAndMore(appText.freeClasses, onTapViewAll: (){
-                                        locator<FilterCourseProvider>().clearFilter();
-                                        locator<FilterCourseProvider>().free = true;
-                                        nextRoute(FilterCategoryPage.pageName);
-                                      }),
+                                  // // Free Classes
+                                  // Column(
+                                  //   children: [
+                                  //     HomeWidget.titleAndMore(appText.freeClasses, onTapViewAll: (){
+                                  //       locator<FilterCourseProvider>().clearFilter();
+                                  //       locator<FilterCourseProvider>().free = true;
+                                  //       nextRoute(FilterCategoryPage.pageName);
+                                  //     }),
                 
-                                      SizedBox(
-                                        width: getSize().width,
-                                        child: SingleChildScrollView(
-                                          physics: const BouncingScrollPhysics(),
-                                          padding: padding(),
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: List.generate( isLoadingFreeListData ? 3 : freeListData.length, (index) {
-                                              return isLoadingFreeListData
-                                                ? courseItemShimmer()
-                                                : courseItem(
-                                                    freeListData[index]
-                                                  );
-                                            }),
-                                          ),
-                                        ),
-                                      )
+                                  //     SizedBox(
+                                  //       width: getSize().width,
+                                  //       child: SingleChildScrollView(
+                                  //         physics: const BouncingScrollPhysics(),
+                                  //         padding: padding(),
+                                  //         scrollDirection: Axis.horizontal,
+                                  //         child: Row(
+                                  //           children: List.generate( isLoadingFreeListData ? 3 : freeListData.length, (index) {
+                                  //             return isLoadingFreeListData
+                                  //               ? courseItemShimmer()
+                                  //               : courseItem(
+                                  //                   freeListData[index]
+                                  //                 );
+                                  //           }),
+                                  //         ),
+                                  //       ),
+                                  //     )
                 
-                                    ],
-                                  ),
+                                  //   ],
+                                  // ),
                 
                 
                 

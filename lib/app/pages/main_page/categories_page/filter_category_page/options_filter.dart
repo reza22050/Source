@@ -28,7 +28,7 @@ class _OptionsFilterState extends State<OptionsFilter> {
   bool highSort = false;
   bool lowSort = false;
   bool bestSellerSort = false;
-  bool bestRatedSort = false;
+  bool defaultSort = false;
 
 
   @override
@@ -64,7 +64,7 @@ class _OptionsFilterState extends State<OptionsFilter> {
         break;
       
       case 'best_rates':
-        bestRatedSort = true;
+        defaultSort = true;
         break;
 
       default:
@@ -186,9 +186,9 @@ class _OptionsFilterState extends State<OptionsFilter> {
             
               space(16),
             
-              radioButton(appText.bestRated, bestRatedSort, (value) {
+              radioButton(appText.bestRated, defaultSort, (value) {
                 sortOff();
-                bestRatedSort = value;
+                defaultSort = value;
                 setState(() {});
               }),
               
@@ -206,19 +206,19 @@ class _OptionsFilterState extends State<OptionsFilter> {
         
         
         
-                  locator<FilterCourseProvider>().sort = allSort
+                  locator<FilterCourseProvider>().sort = (allSort
                     ? ''
                     : newestSort
-                      ? 'newest'
+                      ? 3
                       : highSort
-                        ? 'expensive'
+                        ? 5
                         : lowSort
-                          ? 'inexpensive'
+                          ? 4
                           : bestSellerSort
-                            ? 'bestsellers'
-                            : bestRatedSort
-                              ? 'best_rates'
-                              : '';
+                            ? 2
+                            : defaultSort
+                              ? 1
+                              : '') as int?;
         
                   backRoute(arguments: true);
         
@@ -247,6 +247,6 @@ class _OptionsFilterState extends State<OptionsFilter> {
     highSort = false;
     lowSort = false;
     bestSellerSort = false;
-    bestRatedSort = false;
+    defaultSort = false;
   }
 }

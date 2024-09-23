@@ -13,7 +13,7 @@ class FilterCourseProvider extends ChangeNotifier{
   bool bundleCourse=false;
   bool rewardCourse=false;
 
-  String sort = '';
+  int? sort;
 
 
   clearFilter(){
@@ -26,6 +26,6 @@ class FilterCourseProvider extends ChangeNotifier{
     bundleCourse=false;
     rewardCourse=false;
 
-    sort = '';
+    sort = null;
   }
 }

@@ -70,27 +70,6 @@ class AuthenticationService{
     try{
       String url = '${Constants.apiUrl}account/login';
 
-      // Response res = await httpPost(
-      //   url, 
-      //   {
-      //     'username': username,
-      //     'password': password
-      //   }
-      // );
-
-      // log(res.body.toString());
-
-      // var jsonResponse = jsonDecode(res.body);
-      // if(jsonResponse['success']){
-      //   await AppData.saveAccessToken(jsonResponse['data']['token']);
-      //   await AppData.saveName('');
-      //   return true;
-      // }else{
-      //   ErrorHandler().showError(ErrorEnum.error, jsonResponse,readMessage: true);
-      //   return false;
-      // }
-
-    
       dio.FormData formData = dio.FormData.fromMap({
 
         "username": username,
@@ -104,8 +83,6 @@ class AuthenticationService{
         //isRedirectingStatusCode: false
       );
 
-      //log(res.['data']);
-      
       var jsonResponse = res.data['data']['tokenData'];
       if(res.data['isSuccess']){
         await AppData.saveAccessToken(jsonResponse['accessToken']);

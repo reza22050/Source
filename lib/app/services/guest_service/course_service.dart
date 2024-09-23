@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:webinar/app/models/content_model.dart';
 import 'package:webinar/app/models/course_model.dart';
 import 'package:webinar/app/models/notice_model.dart';
@@ -18,53 +19,69 @@ import '../../models/single_content_model.dart';
 
 class CourseService{
 
-  static Future<List<CourseModel>> getAll({ required int offset,bool upcoming=false, bool free=false, bool discount=false, bool downloadable=false, String? sort, String? type, String? cat, bool reward=false, bool bundle=false, List<int>? filterOption, })async{
+  static Future<List<CourseModel>> getAll({ required int offset,
+  List<int>? gradeIds , 
+  List<int>? teacherIds , 
+  String? search,
+  int? typeSort,
+  int? sort,
+  int pageIndex = 1,
+  int pageSize = 9,
+  bool upcoming=false, bool free=false, bool discount=false, bool downloadable=false, String? type, String? cat, bool reward=false, bool bundle=false, List<int>? filterOption, })async{
     List<CourseModel> data = [];
-    // try{
-      String url = '${Constants.baseUrl}${bundle ? 'bundles' : 'courses'}?offset=$offset&limit=10';
+     try{
+      String url = '${Constants.apiUrl}Course/GetCourseCard';
+      gradeIds ??= [1,2];
+      teacherIds ??= [1];
 
-      if(upcoming) url += '&upcoming=1';
-      if(free) url += '&free=1';
-      if(discount) url += '&discount=1';
-      if(downloadable) url += '&downloadable=1';
-      if(reward) url += '&reward=1';
-
-      if(sort != null) url += '&sort=$sort';
-      if(cat != null) url += '&cat=$cat';
-
-      if(filterOption != null && filterOption.isNotEmpty){
-        for (int i=0; i < filterOption.length; i++) {
-          url += '&filter_option=${filterOption[i]}';
-        }
-      }
-
-      Response res = await httpGet(url);
-        
-      var jsonRes = jsonDecode(res.body);
+ /*   dio.FormData formData = dio.FormData.fromMap({
+       "gradeIds": jsonEncode(gradeIds),
+       "teacherIds": jsonEncode(teacherIds),
+       "typeSort": typeSort, 
+        "sort": sort, 
+        "pageIndex": pageIndex, 
+        "pageSize": pageSize,
+        "search": search
+      });*/
       
 
-      if (jsonRes['success'] ?? false) {
 
-        if(bundle){
-          jsonRes['data']['bundles'].forEach((json){
+      dio.FormData formData = dio.FormData.fromMap({
+  //"request": jsonEncode({
+    "gradeIds": jsonEncode(gradeIds),
+    "teacherIds": jsonEncode(teacherIds),
+    //"gradeIds": gradeIds,
+    //"teacherIds": teacherIds,
+    "typeSort": 1,
+    "sort": sort ?? 1,
+    "pageIndex": pageIndex,
+    "pageSize": pageSize,
+    "search": search
+ // }),
+});
+
+     dio.Response res = await dioPost(
+        url,
+        formData
+      );
+
+      var jsonResponse = res.data;
+      if (jsonResponse['isSuccess'] ?? false) {
+
+          jsonResponse['data']['data'].forEach((json){
             data.add(CourseModel.fromJson(json));
           });
 
-        }else{
-          jsonRes['data'].forEach((json){
-            data.add(CourseModel.fromJson(json));
-          });
+          log('course count : ${data.length}');
+          return data;
         }
-
-        log('course count : ${data.length}');
-        return data;
-      }else{
+      else{
         return data;
       }
 
-    // }catch(e){
-    //   return data;
-    // }
+    }catch(e){
+      return data;
+    }
   }
 
 
@@ -132,16 +149,16 @@ class CourseService{
     List<CourseModel> data = [];
     try{
 
-      String url = '${Constants.baseUrl}featured-courses';
+      String url = '${Constants.apiUrl}Slider/GetActiveSliders';
 
-      if(cat != null) url += '?cat=$cat';
+      //if(cat != null) url += '?cat=$cat';
 
 
       Response res = await httpGet(url, isMaintenance: true);
         
       var jsonRes = jsonDecode(res.body);
 
-      if (jsonRes['success']) {
+      if (jsonRes['isSuccess']) {
         jsonRes['data'].forEach((json){
           data.add(CourseModel.fromJson(json));
         });

@@ -58,6 +58,9 @@ class CourseModel {
   List<Translations>? translations;
 
   List<CustomBadges>? badges;
+  String? teachersFullName;
+  int? courseSectionCount;
+  int? teacherId;
 
   CourseModel(
       {this.image,
@@ -101,7 +104,11 @@ class CourseModel {
       this.progress,
       this.progressPercent,
       this.category,
-      this.capacity});
+      this.capacity, 
+      this.teachersFullName, 
+      this.courseSectionCount, 
+      this.teacherId
+      });
 
   CourseModel.fromJson(Map<String, dynamic> json) {
 
@@ -144,13 +151,13 @@ class CourseModel {
     isFavorite = json['is_favorite'];
     priceString = json['price_string'];
     bestTicketString = json['best_ticket_string'];
-    price = json['price'];
+    price = json['originalPrice'];
     tax = json['tax'];
     taxWithDiscount = json['tax_with_discount'];
     bestTicketPrice = json['best_ticket_price'];
     discountPercent = json['discount_percent'] ?? 0;
     coursePageTax = json['course_page_tax'];
-    priceWithDiscount = json['price_with_discount'];
+    priceWithDiscount = json['salePrice'];
     discountAmount = json['discount_amount'];
     activeSpecialOffer = json['active_special_offer'] != null
         ? ActiveSpecialOffer.fromJson(json['active_special_offer'])
@@ -158,7 +165,7 @@ class CourseModel {
     duration = int.tryParse(json['duration']?.toString() ?? '0');
     
     teacher = json['teacher'] != null ? UserModel.fromJson(json['teacher']) : null;
-    
+    teachersFullName = json['teachersFullName'];
     studentsCount = json['students_count'];
     rate = json['rate']?.toString();
     rateType = json['rate_type'] != null
@@ -174,6 +181,8 @@ class CourseModel {
     
     category = json['category'].runtimeType == String ? json['category'] : json['category']?['slug'];
     capacity = json['capacity'];
+    teacherId = json['teacherId'];
+    courseSectionCount = json['courseSectionCount'];
   }
 
   Map<String, dynamic> toJson() {
