@@ -70,3 +70,22 @@ String secondDurationToString(int seconds) {
   List<String> parts = d.toString().split(':');
   return '${parts[1].padLeft(2, '0')}:${parts[2].padLeft(2, '0').split('.').first}';
 }
+
+String formatNumber(int number) {
+  String numberStr = number.toString();
+  StringBuffer buffer = StringBuffer();
+  int count = 0;
+
+  for (int i = numberStr.length - 1; i >= 0; i--) {
+    buffer.write(numberStr[i]);
+    count++;
+
+    // Insert a comma every 3 digits, except at the end
+    if (count % 3 == 0 && i != 0) {
+      buffer.write(',');
+    }
+  }
+
+  // Reverse the buffer and return the formatted number
+  return buffer.toString().split('').reversed.join('');
+}

@@ -66,7 +66,7 @@ class SingleCourseModel {
   List<FilesChapters> filesChapters = [];
   List<ReviewModel>? reviews;
   
-  int? filesCount;
+  int? activityCount;
   int? sessionsCount;
   int? textLessonsCount;
   int? quizzesCount;
@@ -82,7 +82,7 @@ class SingleCourseModel {
   bool? canBuyWithPoints;
 
   List<CashbackRules> cashbackRules = [];
-
+  int? sectionCount;
 
 
   SingleCourseModel(
@@ -131,7 +131,7 @@ class SingleCourseModel {
       this.description,
       this.faqs,
       this.sessionsCount,
-      this.filesCount,
+      this.activityCount,
       this.textLessonsCount,
       this.quizzesCount,
       this.reviews,
@@ -143,7 +143,9 @@ class SingleCourseModel {
       this.tags,
       this.authHasSubscription,
       this.canAddToCart,
-      this.canBuyWithPoints});
+      this.canBuyWithPoints,
+      this.sectionCount
+      });
 
   SingleCourseModel.fromJson(Map<String, dynamic> json) {
 
@@ -166,16 +168,16 @@ class SingleCourseModel {
     status = json['status'];
     label = json['label'];
     title = json['courseInfo']['title'];
-    type = json['type'];
+    type = json['type'] = 'course';
     link = json['link'];
     accessDays = json['access_days'];
     liveWebinarStatus = json['live_webinar_status'];
-    authHasBought = json['auth_has_bought'];
+    authHasBought = json['auth_has_bought'] = false;
     sales = json['sales'] != null ? Sales.fromJson(json['sales']) : null;
     isFavorite = json['is_favorite'];
     priceString = json['price_string'];
     bestTicketString = json['best_ticket_string'];
-    price = json['price'];
+    price = json['price'] = 70000;
     tax = json['tax'];
     taxWithDiscount = json['tax_with_discount'];
     bestTicketPrice = json['best_ticket_price'];
@@ -211,6 +213,12 @@ class SingleCourseModel {
       json['faqs'].forEach((v) {
         faqs!.add(Faqs.fromJson(v));
       });
+    }else{
+      faqs = <Faqs>[
+            Faqs(id: 1, title: 'آیا امکان مشاهده دوره بصورت آفلاین وجود دارد؟', answer: 'بله امکان دارد'),
+            Faqs(id: 2, title: 'آیا در سایت هم دسترسی به ویدیوها وجود دارد', answer: 'بله وجود دارد'),
+            Faqs(id: 3, title: 'مدت اشتراک این درس چند ماه است؟', answer: 'یکسال'),
+      ];
     }
 
     if (json['comments'] != null) {
@@ -242,7 +250,8 @@ class SingleCourseModel {
       });
     }
 
-    filesCount = json['files_count'];
+    activityCount = json['courseInfo']['activityCount'];
+    sectionCount = json['courseInfo']['sectionCount'];
     textLessonsCount = json['text_lessons_count'];
     quizzesCount = json['quizzes_count'];
 
@@ -374,7 +383,7 @@ class SingleCourseModel {
     data['prerequisites'] = prerequisites.map((v) => v.toJson()).toList();
     data['session_chapters'] = sessionChapters.map((v) => v.toJson()).toList();
 
-    data['files_count'] = filesCount;
+    data['files_count'] = activityCount;
     data['text_lessons_count'] = textLessonsCount;
     data['quizzes_count'] = quizzesCount;
     if (reviews != null) {

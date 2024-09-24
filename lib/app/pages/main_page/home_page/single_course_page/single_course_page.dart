@@ -22,6 +22,7 @@ import 'package:webinar/common/data/api_public_data.dart';
 import 'package:webinar/common/data/app_data.dart';
 import 'package:webinar/common/utils/app_text.dart';
 import 'package:webinar/common/utils/constants.dart';
+import 'package:webinar/common/utils/date_formater.dart';
 import 'package:webinar/config/assets.dart';
 import 'package:webinar/config/colors.dart';
 import 'package:webinar/config/styles.dart';
@@ -78,7 +79,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
   void initState() {
     super.initState();
 
-    tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
     getData();
     
 
@@ -304,18 +305,18 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
 
                                 space(0,width: 4),
 
-                                // Container(
-                                //   padding: padding(horizontal: 6,vertical: 3),
-                                //   decoration: BoxDecoration(
-                                //     color: greyE7,
-                                //     borderRadius: borderRadius()
-                                //   ),
+                                Container(
+                                  padding: padding(horizontal: 6,vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: greyE7,
+                                    borderRadius: borderRadius()
+                                  ),
 
-                                //   child: Text(
-                                //     courseData?.reviewsCount?.toString() ?? '500',
-                                //     style: style10Regular().copyWith(color: greyB2),
-                                //   ),
-                                // )
+                                  child: Text(
+                                    courseData?.reviewsCount?.toString() ?? '500',
+                                    style: style10Regular().copyWith(color: greyB2),
+                                  ),
+                                )
 
                               ],
                             ),
@@ -399,15 +400,15 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                           height: 32,
                         ),
                         
-                        // Tab(
-                        //   text: appText.reviews,
-                        //   height: 32,
-                        // ),
+                        Tab(
+                          text: appText.reviews,
+                          height: 32,
+                        ),
                         
-                        // Tab(
-                        //   text: appText.comments,
-                        //   height: 32,
-                        // ),
+                        Tab(
+                          text: appText.comments,
+                          height: 32,
+                        ),
 
                       ]),
                     ),
@@ -536,7 +537,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                               Text(
                                 ((courseData?.price ?? 0) == 0)
                                   ? appText.free
-                                  : CurrencyUtils.calculator(courseData!.price ?? 0),
+                                  : CurrencyUtils.calculator(formatNumber(courseData!.price) ?? 0),
                                 style: style12Regular().copyWith(
                                   color: (courseData!.discountPercent ?? 0) > 0 ? greyCF : green77(),
                                   decoration: (courseData!.discountPercent ?? 0) > 0 ? TextDecoration.lineThrough : TextDecoration.none,
@@ -684,33 +685,33 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                         
-                            Text(
-                              '${courseData?.progressPercent ?? 0}% ${appText.completed}',
-                              style: style10Regular().copyWith(color: greyA5),
-                            ),
+                            // Text(
+                            //   '${courseData?.progressPercent ?? 0}% ${appText.completed}',
+                            //   style: style10Regular().copyWith(color: greyA5),
+                            // ),
                             
-                            space(6),
+                            // space(6),
 
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                return Container(
-                                  width: constraints.maxWidth,
-                                  height: 4,
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: Container(
-                                    width: ((courseData?.progressPercent ?? 0) > 0)
-                                      ? constraints.maxWidth * ((courseData?.progressPercent ?? 0) / 100)
-                                      : 5,
+                            // LayoutBuilder(
+                            //   builder: (context, constraints) {
+                            //     return Container(
+                            //       width: constraints.maxWidth,
+                            //       height: 4,
+                            //       alignment: AlignmentDirectional.centerStart,
+                            //       child: Container(
+                            //         width: ((courseData?.progressPercent ?? 0) > 0)
+                            //           ? constraints.maxWidth * ((courseData?.progressPercent ?? 0) / 100)
+                            //           : 5,
 
-                                    height: 4,
-                                    decoration: BoxDecoration(
-                                      color: green77(),
-                                      borderRadius: borderRadius(),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                            //         height: 4,
+                            //         decoration: BoxDecoration(
+                            //           color: green77(),
+                            //           borderRadius: borderRadius(),
+                            //         ),
+                            //       ),
+                            //     );
+                            //   },
+                            // ),
 
 
                             space(12),

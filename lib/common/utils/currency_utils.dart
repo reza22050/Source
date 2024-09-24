@@ -11,7 +11,7 @@ class CurrencyUtils{
   CurrencyUtils(){
     AppData.getCurrency().then((value) {
       userCurrency = value;
-      GuestService.getCurrencyList();
+      //GuestService.getCurrencyList();
     });
   }
   
@@ -25,7 +25,7 @@ class CurrencyUtils{
 
   static String calculator(var price) {
     String symbol = getSymbol(userCurrency);
-    
+    /*
     if(PublicData.currencyListData.indexWhere((element) => element.currency == userCurrency) == -1){
       return PublicData.apiConfigData['currency_position']?.toString().toLowerCase() == 'right' ? '$price$symbol' : '$symbol$price';
     }
@@ -35,6 +35,8 @@ class CurrencyUtils{
 
     return currency.currencyPosition?.toString().toLowerCase() == 'right'
         ? '${newPrice.toStringAsFixed(currency.currencyDecimal ?? 0)}$symbol'
-        : '$symbol${newPrice.toStringAsFixed(currency.currencyDecimal ?? 0)}';
+        : '$symbol${newPrice.toStringAsFixed(currency.currencyDecimal ?? 0)}';*/
+
+        return '$price$symbol';
   }
 }
