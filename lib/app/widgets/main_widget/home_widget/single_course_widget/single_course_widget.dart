@@ -1030,9 +1030,7 @@ class SingleCourseWidget {
                       });
 
                       bool res = await CartService.add(
-                          courseData.id!.toString(),
-                          courseData.type == 'bundle' ? 'bundle' : 'webinar',
-                          '');
+                          courseData.onlineEnrollmentId ?? -1, 1);
 
                       state(() {
                         isLoading = false;

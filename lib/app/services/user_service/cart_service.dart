@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart';
@@ -186,25 +187,25 @@ class CartService {
     }
   }
 
-  static Future<bool> add(String itemId,
+  static Future<bool> add(int itemId,
       int quantity /*String itemName, String? specifications*/) async {
     try {
       String url = '${Constants.apiUrl}Basket/createOrUpdateBasket';
 
+      dio.FormData formData = dio.FormData.fromMap({
+        "buyerId": await AppData.getBasketBuyerId(),
+        "items": jsonEncode([
+              {"courseEnrollmentId": itemId, "quantity": quantity}
+            ])
+      });
+
       dio.Response res = await dioPost(
           url,
-          {
-            "buyerId": AppData.getBasketBuyerId(),
-            "items": [
-              {"courseEnrollmentId": itemId, "quantity": quantity}
-            ]
+          formData,
+          isRedirectingStatusCode: false,
+          arrayKeys: ["items"]);
 
-            //"item_name" : itemName,
-            //"specifications" : specifications,
-          },
-          isRedirectingStatusCode: false);
-
-       var jsonResponse = res.data['data'];
+      var jsonResponse = res.data['data'];
       print(jsonResponse);
 
       if (res.data['isSuccess']) {

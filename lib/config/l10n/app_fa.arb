@@ -257,7 +257,7 @@
     "cartIsEmpty" : "البطاقه خاليه!",
     "cartIsEmptyDesc" : "أضف دوراتك المفضلة إلى سلة التسوق.",
     "back" : "خلف",
-    "successAddToCartDesc" : "انتقل إلى عربة التسوق الخاصة بك لإكمال الطلب",
+    "successAddToCartDesc" : "با موفقیت به سبد خرید شما اضافه شد",
     "notAccessContent" : "ليس لديك حق الوصول إلى هذا المحتوى",
     "offlinePaymentDetails" : "تفاصيل الدفع دون اتصال بالإنترنت",
     "selectBank" : "حدد البنك",

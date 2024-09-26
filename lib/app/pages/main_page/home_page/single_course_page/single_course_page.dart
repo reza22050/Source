@@ -617,7 +617,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                                             });
                                             
                                             await CartService.add(
-                                              courseData?.onlineEnrollmentId?.toString() ?? '', 
+                                              courseData?.onlineEnrollmentId ?? -1, 
                                               1
                                               /*isBundleCourse ? 'bundle' : 'webinar', 
                                               ''*/
@@ -682,7 +682,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                                             });
                                             
                                             await CartService.add(
-                                              courseData?.id?.toString() ?? '', 1
+                                              courseData?.physicalEnrollmentId ?? -1, 1
                                               /*isBundleCourse ? 'bundle' : 'webinar', 
                                               ''*/
                                             );
