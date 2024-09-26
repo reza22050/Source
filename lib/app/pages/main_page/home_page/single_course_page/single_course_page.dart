@@ -526,31 +526,33 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                           Row(
                             children: [
                               
+
+                              if((courseData!.physicalSalePrice ?? 0) == 0)...{
                               Text(
                                 appText.price,
                                 style: style14Regular().copyWith(color: greyA5),
                               ),
 
-
                               const Spacer(),
 
                               Text(
-                                ((courseData?.price ?? 0) == 0)
+                                ((courseData?.onlineSalePrice ?? 0) == 0)
                                   ? appText.free
-                                  : CurrencyUtils.calculator(formatNumber(courseData!.price) ?? 0),
+                                  : (courseData!.onlinelDicountPrice ?? 0) > 0 ?  courseData!.onlineOriginalPrice.toString() : CurrencyUtils.calculator(formatNumber(courseData!.onlineSalePrice!) ?? 0),
                                 style: style12Regular().copyWith(
-                                  color: (courseData!.discountPercent ?? 0) > 0 ? greyCF : green77(),
-                                  decoration: (courseData!.discountPercent ?? 0) > 0 ? TextDecoration.lineThrough : TextDecoration.none,
-                                  decorationColor: (courseData!.discountPercent ?? 0) > 0 ? greyCF : green77(),
+                                  color: (courseData!.onlinelDicountPrice ?? 0) > 0 ? greyCF : green77(),
+                                  decoration: (courseData!.onlinelDicountPrice ?? 0) > 0 ? TextDecoration.lineThrough : TextDecoration.none,
+                                  decorationColor: (courseData!.onlinelDicountPrice ?? 0) > 0 ? greyCF : green77(),
                                 ),
                               ),
-                      
-                              if((courseData!.discountPercent ?? 0) > 0)...{
+                              }
+                              
+                              else if((courseData!.onlinelDicountPrice ?? 0) > 0)...{
                                 space(0,width: 8),
                       
                                 Text(
                                   CurrencyUtils.calculator(
-                                    (courseData!.price ?? 0) - ((courseData!.price ?? 0) * (courseData!.discountPercent ?? 0) ~/ 100)
+                                    (courseData!.onlineSalePrice ?? 0) //- ((courseData!.onlineSalePrice ?? 0) * (courseData!.onlinelDicountPrice ?? 0) ~/ 100)
                                   ),
                                   style: style14Regular().copyWith(
                                     color: green77(),
@@ -567,65 +569,138 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                             children: [
 
                               Expanded(
-                                child: button(
-                                  onTap: () async {
-
-                                    if(((courseData?.price ?? 0) == 0)){
-
-                                      setState(() {
-                                        isEnrollLoading = true;
-                                      });
+                                child: Column(
+                                  children: [
+                                    Visibility
+                                    (
+                                      visible: courseData!.onlineSalePrice != null,
+                                      child: button(
+                                        onTap: () async {
                                       
+                                          if(((courseData?.onlineSalePrice ?? 0) == 0)){
                                       
-                                      bool res = isBundleCourse 
-                                        ? await PurchaseService.bundlesFree(courseData!.id!)
-                                        : await PurchaseService.courseFree(courseData!.id!);
-
-                                      if(res){
-                                        getData();
-                                      }
+                                            setState(() {
+                                              isEnrollLoading = true;
+                                            });
+                                            
+                                            
+                                            bool res = isBundleCourse 
+                                              ? await PurchaseService.bundlesFree(courseData!.id!)
+                                              : await PurchaseService.courseFree(courseData!.id!);
                                       
-                                      setState(() {
-                                        isEnrollLoading = false;
-                                      });
-
-                                      return;
-    
-                                    }
-
-                                    if(courseData!.tickets.isNotEmpty || (courseData!.points != null && courseData!.points != 0)){
+                                            if(res){
+                                              getData();
+                                            }
+                                            
+                                            setState(() {
+                                              isEnrollLoading = false;
+                                            });
                                       
-                                      SingleCourseWidget.pricingPlanDialog(courseData!).then((value) {
-                                        if(value != null && value){
-                                          courseData = null;
-                                          getData();
-                                        }
-                                      });
-                                      return;
-                                    
-                                    }else{
-
-                                      setState(() {
-                                        isEnrollLoading = true;
-                                      });
+                                            return;
+                                          
+                                          }
                                       
-                                      await CartService.add(
-                                        courseData?.id?.toString() ?? '', 
-                                        isBundleCourse ? 'bundle' : 'webinar', 
-                                        ''
-                                      );
-
-                                      setState(() {
-                                        isEnrollLoading = false;
-                                      });
-                                    }
-                                  }, 
-                                  width: getSize().width, 
-                                  height: 52, 
-                                  text: appText.enrollOnClass, 
-                                  bgColor: green77(), 
-                                  textColor: Colors.white,
-                                  isLoading: isEnrollLoading
+                                          if(courseData!.tickets.isNotEmpty || (courseData!.points != null && courseData!.points != 0)){
+                                            
+                                            SingleCourseWidget.pricingPlanDialog(courseData!).then((value) {
+                                              if(value != null && value){
+                                                courseData = null;
+                                                getData();
+                                              }
+                                            });
+                                            return;
+                                          
+                                          }else{
+                                      
+                                            setState(() {
+                                              isEnrollLoading = true;
+                                            });
+                                            
+                                            await CartService.add(
+                                              courseData?.onlineEnrollmentId?.toString() ?? '', 
+                                              1
+                                              /*isBundleCourse ? 'bundle' : 'webinar', 
+                                              ''*/
+                                            );
+                                      
+                                            setState(() {
+                                              isEnrollLoading = false;
+                                            });
+                                          }
+                                        }, 
+                                        width: getSize().width, 
+                                        height: 52, 
+                                        text:  ((courseData!.physicalSalePrice ?? 0)==0) ? appText.enrollOnClass : "${ appText.buyOnline}: ${CurrencyUtils.calculator(formatNumber(courseData!.onlineSalePrice ?? 0))}", 
+                                        bgColor: green77(), 
+                                        textColor: Colors.white,
+                                        isLoading: isEnrollLoading
+                                      ),
+                                    ),
+                                    space(15),
+                                     Visibility(
+                                      visible: courseData!.physicalSalePrice != null,
+                                       child: button(
+                                        onTap: () async {
+                                                                           
+                                          if(((courseData?.onlineSalePrice ?? 0) == 0)){
+                                                                           
+                                            setState(() {
+                                              isEnrollLoading = true;
+                                            });
+                                            
+                                            
+                                            bool res = isBundleCourse 
+                                              ? await PurchaseService.bundlesFree(courseData!.id!)
+                                              : await PurchaseService.courseFree(courseData!.id!);
+                                                                           
+                                            if(res){
+                                              getData();
+                                            }
+                                            
+                                            setState(() {
+                                              isEnrollLoading = false;
+                                            });
+                                                                           
+                                            return;
+                                          
+                                          }
+                                                                           
+                                          if(courseData!.tickets.isNotEmpty || (courseData!.points != null && courseData!.points != 0)){
+                                            
+                                            SingleCourseWidget.pricingPlanDialog(courseData!).then((value) {
+                                              if(value != null && value){
+                                                courseData = null;
+                                                getData();
+                                              }
+                                            });
+                                            return;
+                                          
+                                          }else{
+                                                                           
+                                            setState(() {
+                                              isEnrollLoading = true;
+                                            });
+                                            
+                                            await CartService.add(
+                                              courseData?.id?.toString() ?? '', 1
+                                              /*isBundleCourse ? 'bundle' : 'webinar', 
+                                              ''*/
+                                            );
+                                                                           
+                                            setState(() {
+                                              isEnrollLoading = false;
+                                            });
+                                          }
+                                        }, 
+                                        width: getSize().width, 
+                                        height: 52, 
+                                        text: "${appText.buyDVD}: ${CurrencyUtils.calculator(formatNumber(courseData!.physicalSalePrice ?? 0))}", 
+                                        bgColor: red49, 
+                                        textColor: Colors.white,
+                                        isLoading: isEnrollLoading,
+                                                                           ),
+                                     ),
+                                  ],
                                 )
                               ),
 

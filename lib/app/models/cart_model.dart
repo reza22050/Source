@@ -2,23 +2,30 @@ import 'package:webinar/app/models/profile_model.dart';
 import 'package:webinar/app/models/user_model.dart';
 
 class CartModel {
-  List<Items>? items;
   Amounts? amounts;
   var totalCashbackAmount;
   UserGroup? userGroup;
+  
+  late int id;
+  int? discountAmount;
+  String? voucherCode;
+  List<Items>? items;
 
-  CartModel({this.items, this.amounts});
+  CartModel({this.items, this.amounts, this.voucherCode, this.discountAmount, required this.id});
 
   CartModel.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = <Items>[];
+      items = <Items>[];  
       json['items'].forEach((v) {
         items!.add(Items.fromJson(v));
       });
     }
-    totalCashbackAmount = json['totalCashbackAmount'];
     amounts = json['amounts'] != null ? Amounts.fromJson(json['amounts']) : null;
+    
     userGroup = json['user_group'] != null ? UserGroup.fromJson(json['user_group']) : null;
+    totalCashbackAmount = json['totalCashbackAmount'];
+
+    id=json['id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -34,19 +41,24 @@ class CartModel {
 }
 
 class Items {
-  int? id;
   String? type;
   String? image;
-  String? title;
   String? teacherName;
   String? rate;
   String? day;
   String? timezone;
-  int? price;
-  int? discount;
-  int? quantity;
   Time? time;
   Time? timeUser;
+
+  int? id;
+  int? quantity;
+  int? courseEnrollmentId;
+  String? title;
+  int? salePrice;
+  int? originalPrice;
+  int? discountPrice;
+  int? enrollmentType;
+  int? courseId;
 
   Items(
       {this.id,
@@ -55,9 +67,16 @@ class Items {
       this.title,
       this.teacherName,
       this.rate,
-      this.price,
-      this.discount,
-      this.quantity});
+      this.salePrice,
+      this.discountPrice,
+      this.quantity,
+      this.courseEnrollmentId, 
+      this.originalPrice, 
+      this.enrollmentType, 
+      this.courseId
+      
+      
+      });
 
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -68,11 +87,16 @@ class Items {
     timezone = json['timezone'];
     teacherName = json['teacher_name'];
     rate = json['rate']?.toString();
-    price = double.parse(json['price']?.toString() ?? '0').toInt();
-    discount = json['discount'];
+    salePrice = double.parse(json['price']?.toString() ?? '0').toInt();
+    discountPrice = json['discountPrice'];
     quantity = json['quantity'];
     time = json['time'] != null ? Time.fromJson(json['time']) : null;
     timeUser = json['time_user'] != null ? Time.fromJson(json['time_user']) : null;
+
+    courseEnrollmentId = json['courseEnrollmentId'];
+    originalPrice = json['originalPrice'];
+    enrollmentType = json['enrollmentType'];
+    courseId = json['courseId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,8 +107,8 @@ class Items {
     data['title'] = title;
     data['teacher_name'] = teacherName;
     data['rate'] = rate;
-    data['price'] = price;
-    data['discount'] = discount;
+    data['price'] = salePrice;
+    data['discount'] = discountPrice;
     data['quantity'] = quantity;
     data['time_user'] = timeUser;
     return data;

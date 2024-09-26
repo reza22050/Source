@@ -5,7 +5,6 @@ import 'package:webinar/app/models/user_model.dart';
 import 'course_model.dart';
 
 class SingleCourseModel {
-
   int? forum;
   int? isPrivate;
 
@@ -27,11 +26,19 @@ class SingleCourseModel {
   bool? isFavorite;
   String? priceString;
   String? bestTicketString;
-  var price;
+  int? onlineSalePrice;
+  int? onlineOriginalPrice;
+  int? onlinelDicountPrice;
+  int? onlineEnrollmentId;
+
+  int? physicalSalePrice;
+  int? physicalOriginalPrice;
+  int? physicalDicountPrice;
+  int? physicalEnrollmentId;
+
   var tax;
   var taxWithDiscount;
   var bestTicketPrice;
-  var discountPercent;
   int? coursePageTax;
   var priceWithDiscount;
   var discountAmount;
@@ -65,7 +72,7 @@ class SingleCourseModel {
   List<TextLessonChapters> textLessonChapters = [];
   List<FilesChapters> filesChapters = [];
   List<ReviewModel>? reviews;
-  
+
   int? activityCount;
   int? sessionsCount;
   int? textLessonsCount;
@@ -83,7 +90,6 @@ class SingleCourseModel {
 
   List<CashbackRules> cashbackRules = [];
   int? sectionCount;
-
 
   SingleCourseModel(
       {this.image,
@@ -103,11 +109,11 @@ class SingleCourseModel {
       this.isFavorite,
       this.priceString,
       this.bestTicketString,
-      this.price,
+      this.onlineSalePrice,
       this.tax,
       this.taxWithDiscount,
       this.bestTicketPrice,
-      this.discountPercent,
+      this.onlinelDicountPrice,
       this.coursePageTax,
       this.priceWithDiscount,
       this.discountAmount,
@@ -144,11 +150,15 @@ class SingleCourseModel {
       this.authHasSubscription,
       this.canAddToCart,
       this.canBuyWithPoints,
-      this.sectionCount
-      });
+      this.sectionCount,
+      this.onlineOriginalPrice,
+      this.onlineEnrollmentId,
+      this.physicalSalePrice,
+      this.physicalOriginalPrice,
+      this.physicalDicountPrice,
+      this.physicalEnrollmentId});
 
   SingleCourseModel.fromJson(Map<String, dynamic> json) {
-
     if (json['cashbackRules'] != null) {
       cashbackRules = <CashbackRules>[];
       json['cashbackRules'].forEach((v) {
@@ -177,24 +187,36 @@ class SingleCourseModel {
     isFavorite = json['is_favorite'];
     priceString = json['price_string'];
     bestTicketString = json['best_ticket_string'];
-    price = json['price'] = 70000;
+    onlineSalePrice = json['courseInfo']['onlineSalePrice'];
+    onlinelDicountPrice = json['courseInfo']['discount_percent'];
+    onlineOriginalPrice = json['courseInfo']['onlineOriginalPrice'];
+    onlineEnrollmentId = json['courseInfo']['onlineEnrollmentId'];
+
+    physicalSalePrice = json['courseInfo']['physicalSalePrice'];
+    physicalOriginalPrice = json['courseInfo']['physicalOriginalPrice'];
+    physicalDicountPrice = json['courseInfo']['physicalDicountPrice'];
+    physicalEnrollmentId = json['courseInfo']['physicalEnrollmentId'];
+
+    discountAmount = json['discount_amount'];
+
     tax = json['tax'];
     taxWithDiscount = json['tax_with_discount'];
     bestTicketPrice = json['best_ticket_price'];
-    discountPercent = json['discount_percent'];
     coursePageTax = json['course_page_tax'];
     priceWithDiscount = json['price_with_discount'];
-    discountAmount = json['discount_amount'];
-    
-    activeSpecialOffer = json['active_special_offer'] != null ? ActiveSpecialOffer.fromJson(json['active_special_offer']) : null;
+
+    activeSpecialOffer = json['active_special_offer'] != null
+        ? ActiveSpecialOffer.fromJson(json['active_special_offer'])
+        : null;
 
     duration = json['courseInfo']['courseVideoTime']?.toString() ?? '00:00:00';
-    teacher = json['courseTeachers'][0] != null ? UserModel.fromJson(json['courseTeachers'][0] ) : null;
+    teacher = json['courseTeachers'][0] != null
+        ? UserModel.fromJson(json['courseTeachers'][0])
+        : null;
     studentsCount = json['students_count'];
     rate = json['rate']?.toString();
-    rateType = json['rate_type'] != null
-        ? RateType.fromJson(json['rate_type'])
-        : null;
+    rateType =
+        json['rate_type'] != null ? RateType.fromJson(json['rate_type']) : null;
     createdAt = json['created_at'];
     startDate = json['start_date'];
     purchasedAt = json['purchased_at'];
@@ -213,11 +235,17 @@ class SingleCourseModel {
       json['faqs'].forEach((v) {
         faqs!.add(Faqs.fromJson(v));
       });
-    }else{
+    } else {
       faqs = <Faqs>[
-            Faqs(id: 1, title: 'آیا امکان مشاهده دوره بصورت آفلاین وجود دارد؟', answer: 'بله امکان دارد'),
-            Faqs(id: 2, title: 'آیا در سایت هم دسترسی به ویدیوها وجود دارد', answer: 'بله وجود دارد'),
-            Faqs(id: 3, title: 'مدت اشتراک این درس چند ماه است؟', answer: 'یکسال'),
+        Faqs(
+            id: 1,
+            title: 'آیا امکان مشاهده دوره بصورت آفلاین وجود دارد؟',
+            answer: 'بله امکان دارد'),
+        Faqs(
+            id: 2,
+            title: 'آیا در سایت هم دسترسی به ویدیوها وجود دارد',
+            answer: 'بله وجود دارد'),
+        Faqs(id: 3, title: 'مدت اشتراک این درس چند ماه است؟', answer: 'یکسال'),
       ];
     }
 
@@ -262,30 +290,29 @@ class SingleCourseModel {
       });
     }
 
-    
     if (json['tickets'] != null) {
       tickets = <BuyTicketsModel>[];
       json['tickets'].forEach((v) {
         tickets.add(BuyTicketsModel.fromJson(v));
       });
     }
-    
+
     if (json['certificate'] != null) {
       certificates = <CertificateModel>[];
       json['certificate']?.forEach((v) {
-        if(v != null){
+        if (v != null) {
           certificates.add(CertificateModel.fromJson(v));
         }
       });
     }
-    
+
     if (json['quizzes'] != null) {
       quizzes = <QuizzesModel>[];
       json['quizzes'].forEach((v) {
         quizzes.add(QuizzesModel.fromJson(v));
       });
     }
-    
+
     if (json['prerequisites'] != null) {
       prerequisites = <PrerequisitesModel>[];
       json['prerequisites'].forEach((v) {
@@ -316,7 +343,6 @@ class SingleCourseModel {
 
     data['cashbackRules'] = cashbackRules.map((v) => v.toJson()).toList();
 
-
     data['sales_count_number'] = salesCountNumber;
     data['image'] = image;
     data['auth'] = auth;
@@ -339,11 +365,11 @@ class SingleCourseModel {
     data['is_favorite'] = isFavorite;
     data['price_string'] = priceString;
     data['best_ticket_string'] = bestTicketString;
-    data['price'] = price;
+    data['price'] = onlineSalePrice;
     data['tax'] = tax;
     data['tax_with_discount'] = taxWithDiscount;
     data['best_ticket_price'] = bestTicketPrice;
-    data['discount_percent'] = discountPercent;
+    data['discount_percent'] = onlinelDicountPrice;
     data['course_page_tax'] = coursePageTax;
     data['price_with_discount'] = priceWithDiscount;
     data['discount_amount'] = discountAmount;
@@ -372,9 +398,9 @@ class SingleCourseModel {
     if (faqs != null) {
       data['faqs'] = faqs!.map((v) => v.toJson()).toList();
     }
-    
+
     data['comments'] = comments.map((v) => v.toJson()).toList();
-    
+
     data['sessions_count'] = sessionsCount;
     data['files_chapters'] = filesChapters.map((v) => v.toJson()).toList();
     data['quizzes'] = quizzes.map((v) => v.toJson()).toList();
@@ -508,7 +534,7 @@ class Faqs {
   String? answer;
   int? createdAt;
   int? updatedAt;
-  bool isOpen=false;
+  bool isOpen = false;
 
   Faqs({this.id, this.title, this.answer, this.createdAt, this.updatedAt});
 
@@ -544,7 +570,7 @@ class FilesChapters {
   List? sessions;
   List<Files>? files;
   List? quizzes;
-  bool isOpen=false;
+  bool isOpen = false;
 
   FilesChapters(
       {this.id,
@@ -569,7 +595,7 @@ class FilesChapters {
     order = json['order'];
     type = json['type'];
     createdAt = json['created_at'];
-    
+
     // if (json['textLessons'] != null) {
     //   textLessons = <Null>[];
     //   json['textLessons'].forEach((v) {
@@ -719,7 +745,6 @@ class Files {
   }
 }
 
-
 class Tags {
   int? id;
   String? title;
@@ -799,11 +824,13 @@ class CertificateModel {
     attempt = json['attempt'];
     createdAt = json['created_at'];
     certificate = json['certificate'];
-    teacher = json['teacher'] != null ? UserModel.fromJson(json['teacher']) : null;
+    teacher =
+        json['teacher'] != null ? UserModel.fromJson(json['teacher']) : null;
     authAttemptCount = json['auth_attempt_count'];
     attemptState = json['attempt_state'];
     authCanStart = json['auth_can_start'];
-    webinar = json['webinar'] != null ? CourseModel.fromJson(json['webinar']) : null;
+    webinar =
+        json['webinar'] != null ? CourseModel.fromJson(json['webinar']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -943,7 +970,8 @@ class PrerequisitesModel {
 
   PrerequisitesModel.fromJson(Map<String, dynamic> json) {
     isRequired = json['required'];
-    webinar = json['webinar'] != null ? CourseModel.fromJson(json['webinar']) : null;
+    webinar =
+        json['webinar'] != null ? CourseModel.fromJson(json['webinar']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -969,7 +997,7 @@ class SessionChapters {
   List<Sessions>? sessions;
   List<Files>? files;
   List<QuizzesModel>? quizzes;
-  bool isOpen=false;
+  bool isOpen = false;
 
   SessionChapters(
       {this.id,
@@ -1156,7 +1184,7 @@ class TextLessonChapters {
   List<SessionChapters>? sessions;
   List<Files>? files;
   List<QuizzesModel>? quizzes;
-  bool isOpen=false;
+  bool isOpen = false;
 
   TextLessonChapters(
       {this.id,
@@ -1436,9 +1464,8 @@ class ReviewModel {
     createdAt = json['created_at'];
     description = json['description'];
     rate = json['rate'];
-    rateType = json['rate_type'] != null
-        ? RateType.fromJson(json['rate_type'])
-        : null;
+    rateType =
+        json['rate_type'] != null ? RateType.fromJson(json['rate_type']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -1456,8 +1483,6 @@ class ReviewModel {
     return data;
   }
 }
-
-
 
 class CashbackRules {
   int? id;
@@ -1555,8 +1580,3 @@ class Translations {
     return data;
   }
 }
-
-
-
-
-

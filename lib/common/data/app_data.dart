@@ -62,6 +62,15 @@ class AppData {
     return prefs.getBool('is_first') ?? true;
   }
 
+  static Future saveBasketBuyerId(String data) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString('basket', data);
+  }
+
+  static Future getBasketBuyerId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('basket') ?? '';
+  }
 
 
 

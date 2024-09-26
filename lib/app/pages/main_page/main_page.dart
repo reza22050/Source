@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
     AppData.getAccessToken().then((String value) {
 
       if(value.isNotEmpty){
-        RewardsService.getRewards();
+        //RewardsService.getRewards();
         CartService.getCart();
         UserService.getAllNotification();
       }

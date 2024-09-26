@@ -168,9 +168,9 @@ class _CartPageState extends State<CartPage> {
                                       CourseModel(
                                         id: userProvdider.cartData?.items?[index].id,
                                         image: userProvdider.cartData?.items?[index].image,
-                                        price: userProvdider.cartData?.items?[index].price,
-                                        discountPercent: (userProvdider.cartData?.items?[index].discount) != null 
-                                            ? ((((userProvdider.cartData?.items?[index].price ?? 1) - (userProvdider.cartData?.items?[index].discount ?? 1)) / 100 ) * 100).toInt()
+                                        price: userProvdider.cartData?.items?[index].salePrice,
+                                        discountPercent: (userProvdider.cartData?.items?[index].discountPrice) != null 
+                                            ? ((((userProvdider.cartData?.items?[index].salePrice ?? 1) - (userProvdider.cartData?.items?[index].discountPrice ?? 1)) / 100 ) * 100).toInt()
                                             : 0,
                                         rate: userProvdider.cartData?.items?[index].rate,
                                         title: userProvdider.cartData?.items?[index].title,
