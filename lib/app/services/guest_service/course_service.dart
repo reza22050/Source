@@ -106,7 +106,7 @@ class CourseService {
       });
       
 
-    dio.Response res = await dioPost(url,formData );
+    dio.Response res = await dioPostWithToken(url,formData );
 
     var jsonRes = res.data['data'];
     if (res.data['isSuccess'] ?? false) {
@@ -399,13 +399,24 @@ class CourseService {
 
   static Future<SingleContentModel?> getSingleContent(String url) async {
     try {
-      Response res =
-          await httpGetWithToken(url, isRedirectingStatusCode: false);
+    String url = '${Constants.apiUrl}Course/GetCourseActivityDetail';
 
-      var jsonResponse = jsonDecode(res.body);
+      dio.Response res =
+          await dioGetWithToken(url, isRedirectingStatusCode: false);
+
+      /*var jsonResponse = jsonDecode(res.body);
 
       if (jsonResponse['success'] ?? false) {
         return SingleContentModel.fromJson(jsonResponse['data']);
+      } else {
+        ErrorHandler().showError(ErrorEnum.error, jsonResponse);
+        return null;
+      }*/
+
+        var jsonResponse = res.data['data'];
+
+      if (res.data['isSuccess']) {
+         return SingleContentModel.fromJson(jsonResponse ?? {});
       } else {
         ErrorHandler().showError(ErrorEnum.error, jsonResponse);
         return null;

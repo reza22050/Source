@@ -238,7 +238,7 @@ class _SingleContentPageState extends State<SingleContentPage> {
                     
                           SingleCourseWidget.courseStatus(
                             appText.type, 
-                            content?.type == 'file'
+                            content?.type == CourseActivityType.file.value
                               ? singleContentData?.fileType?.toString().toUpperCase() ?? ''
                               : content?.type == 'session' 
                                 ? singleContentData?.sessionApi?.toString() ?? ''
@@ -360,136 +360,136 @@ class _SingleContentPageState extends State<SingleContentPage> {
 
                     },
 
-                    if(PublicData.apiConfigData?['course_notes_status'] == '1')...{
-                      // add note
-                      Row(
-                        children: [
+                    // if(PublicData.apiConfigData?['course_notes_status'] == '1')...{
+                    //   // add note
+                    //   Row(
+                    //     children: [
                           
-                          // add a note
-                          Expanded(
-                            child: button(
-                              onTap: () async {
+                    //       // add a note
+                    //       Expanded(
+                    //         child: button(
+                    //           onTap: () async {
 
-                                if(note == null){
-                                  bool? res = await SingleCourseWidget.showAddNoteDialog(
-                                    courseId!, 
-                                    singleContentData!.id!,
-                                    text: note?.note
-                                  );
+                    //             if(note == null){
+                    //               bool? res = await SingleCourseWidget.showAddNoteDialog(
+                    //                 courseId!, 
+                    //                 singleContentData!.id!,
+                    //                 text: note?.note
+                    //               );
 
-                                  if(res ?? false){
-                                    getNote();
-                                  }
-                                }else{
+                    //               if(res ?? false){
+                    //                 getNote();
+                    //               }
+                    //             }else{
 
-                                  SingleCourseWidget.viewNoteDialog(
-                                    courseId!, 
-                                    singleContentData!.id!,
-                                    note?.note ?? '',
+                    //               SingleCourseWidget.viewNoteDialog(
+                    //                 courseId!, 
+                    //                 singleContentData!.id!,
+                    //                 note?.note ?? '',
 
-                                    () async { // onTapEdit
-                                      backRoute();
+                    //                 () async { // onTapEdit
+                    //                   backRoute();
 
-                                      bool? res = await SingleCourseWidget.showAddNoteDialog(
-                                        courseId!, 
-                                        singleContentData!.id!,
-                                        text: note?.note
-                                      );
+                    //                   bool? res = await SingleCourseWidget.showAddNoteDialog(
+                    //                     courseId!, 
+                    //                     singleContentData!.id!,
+                    //                     text: note?.note
+                    //                   );
 
-                                      if(res ?? false){
-                                        getNote();
-                                      }
+                    //                   if(res ?? false){
+                    //                     getNote();
+                    //                   }
 
-                                    }, 
+                    //                 }, 
                                     
-                                    (){ // onTapAttachment
-                                      backRoute();
+                    //                 (){ // onTapAttachment
+                    //                   backRoute();
 
-                                      SingleCourseWidget.showNoteAttachmentDialog(
-                                        (){ // onTapRemove
-                                        }, 
-                                        (){ // onTapDownload
-                                          downloadSheet(note!.attachment!, note!.attachment!.split('/').last);
-                                        }, 
-                                        note?.attachment != null // hasFileForDownload
-                                      );
+                    //                   SingleCourseWidget.showNoteAttachmentDialog(
+                    //                     (){ // onTapRemove
+                    //                     }, 
+                    //                     (){ // onTapDownload
+                    //                       downloadSheet(note!.attachment!, note!.attachment!.split('/').last);
+                    //                     }, 
+                    //                     note?.attachment != null // hasFileForDownload
+                    //                   );
                                       
-                                    },
+                    //                 },
 
-                                    note?.attachment != null,
-                                  );
-                                }
+                    //                 note?.attachment != null,
+                    //               );
+                    //             }
 
-                              }, 
-                              width: getSize().width, 
-                              height: 52, 
-                              text: note == null ? appText.addANote : appText.viewNote, 
-                              bgColor: Colors.white, 
-                              textColor: green77(),
-                              borderColor: green77(),
-                              raduis: 15
-                            )
-                          ),
+                    //           }, 
+                    //           width: getSize().width, 
+                    //           height: 52, 
+                    //           text: note == null ? appText.addANote : appText.viewNote, 
+                    //           bgColor: Colors.white, 
+                    //           textColor: green77(),
+                    //           borderColor: green77(),
+                    //           raduis: 15
+                    //         )
+                    //       ),
 
-                          if(note != null)...{
-                            space(0,width: 16),
+                    //       if(note != null)...{
+                    //         space(0,width: 16),
 
-                            button(
-                              onTap: (){
-                                PersonalNoteService.delete(note!.id!);
-                                note = null;
-                                setState(() {});
-                              }, 
-                              width: 52, 
-                              height: 52, 
-                              text: '', 
-                              bgColor: Colors.transparent, 
-                              textColor: Colors.white,
-                              borderColor: red49,
-                              iconPath: AppAssets.delete2Svg,
-                              iconColor: red49,
-                              raduis: 20
-                            )
-                          }
+                    //         button(
+                    //           onTap: (){
+                    //             PersonalNoteService.delete(note!.id!);
+                    //             note = null;
+                    //             setState(() {});
+                    //           }, 
+                    //           width: 52, 
+                    //           height: 52, 
+                    //           text: '', 
+                    //           bgColor: Colors.transparent, 
+                    //           textColor: Colors.white,
+                    //           borderColor: red49,
+                    //           iconPath: AppAssets.delete2Svg,
+                    //           iconColor: red49,
+                    //           raduis: 20
+                    //         )
+                    //       }
 
-                        ],
-                      ),
+                    //     ],
+                    //   ),
                       
-                    },
+                    // },
 
-                    // attachments
-                    if(singleContentData?.attachments?.isNotEmpty ?? false)...{
+                    // // attachments
+                    // if(singleContentData?.attachments?.isNotEmpty ?? false)...{
                       
-                      SizedBox(
-                        width: getSize().width,
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Row(
-                            children: [
-                              ...List.generate(singleContentData?.attachments?.length ?? 0, (index) {
-                                return horizontalChapterItem(
-                                  green50,
-                                  AppAssets.paperDownloadSvg,
+                    //   SizedBox(
+                    //     width: getSize().width,
+                    //     child: SingleChildScrollView(
+                    //       physics: const BouncingScrollPhysics(),
+                    //       child: Row(
+                    //         children: [
+                    //           ...List.generate(singleContentData?.attachments?.length ?? 0, (index) {
+                    //             return horizontalChapterItem(
+                    //               green50,
+                    //               AppAssets.paperDownloadSvg,
 
-                                  singleContentData?.attachments?[index].title ?? '', 
+                    //               singleContentData?.attachments?[index].title ?? '', 
 
-                                  singleContentData?.attachments?[index].volume ?? '',
+                    //               singleContentData?.attachments?[index].volume ?? '',
 
-                                  (){
+                    //               (){
 
-                                    downloadSheet(
-                                      '${Constants.baseUrl}files/${content?.id}/download',
-                                      singleContentData?.attachments?[index].file?.split('/').last ?? ''
-                                    );
-                                  },
-                                );
-                              })
-                            ],
-                          ),
-                        ),
-                      )
+                    //                 downloadSheet(
+                    //                   '${Constants.baseUrl}files/${content?.id}/download',
+                    //                   singleContentData?.attachments?[index].file?.split('/').last ?? ''
+                    //                 );
+                    //               },
+                    //             );
+                    //           })
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   )
 
-                    },
+                    // },
           
                     space(200),
           

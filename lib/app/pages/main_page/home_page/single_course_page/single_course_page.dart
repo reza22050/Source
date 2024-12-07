@@ -180,6 +180,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
 
 
     courseData = await CourseService.getSingleCourseData(id, isBundleCourse, isPrivate: isPrivate);
+    contentData = courseData!.contents ?? [];
     
     if(courseData != null && isBundleCourse){
       getBundleCourses();
@@ -324,7 +325,7 @@ class _SingleCoursePageState extends State<SingleCoursePage> with SingleTickerPr
                             space(18),
 
                             if(courseData?.videoDemo != null)...{
-                              if(courseData?.videoDemoSource == 'youtube' || courseData?.videoDemoSource == 'vimeo')...{
+                              if(courseData?.videoDemoSource == 'youtube' || courseData?.videoDemoSource == 'vimeo' || courseData?.videoDemoSource == 'hls')...{
                                 
                                 PodVideoPlayerDev(
                                   courseData?.videoDemo ?? '',

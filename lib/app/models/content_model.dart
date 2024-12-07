@@ -1,7 +1,7 @@
 import 'can_model.dart';
 
 class ContentModel {
-  String? type;
+  int? type;
   int? id;
   String? title;
   int? topicsCount;
@@ -9,6 +9,8 @@ class ContentModel {
   int? checkAllContentsPass;
   List<ContentItem>? items;
   bool isOpen=false;
+  int? sort;
+  String? videoTime;
 
   ContentModel(
       {
@@ -18,21 +20,27 @@ class ContentModel {
       this.topicsCount,
       this.createdAt,
       this.checkAllContentsPass,
-      this.items});
+      this.items, 
+      this.sort,
+      this.videoTime});
 
   ContentModel.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    id = json['id'];
-    title = json['title'];
-    topicsCount = json['topics_count'];
-    createdAt = json['created_at'];
-    checkAllContentsPass = json['check_all_contents_pass'];
-    if (json['items'] != null) {
+    id = json['courseSectionId'];
+    title = json['courseSectionTitle'];
+    if (json['courseActivities'] != null) {
       items = <ContentItem>[];
-      json['items'].forEach((v) {
+      json['courseActivities'].forEach((v) {
         items!.add(ContentItem.fromJson(v));
       });
     }
+    sort =  json['courseSectionSort'];
+    videoTime = json['courseSectionVideoTime'];
+
+    topicsCount = json['topics_count'];
+    type = json['type'];
+    createdAt = json['created_at'];
+    checkAllContentsPass = json['check_all_contents_pass'];
+
     
   }
 
@@ -55,7 +63,7 @@ class ContentItem {
   Can? can;
   var canViewError;
   bool? authHasRead;
-  String? type;
+  int? type;
   int? createdAt;
   String? link;
   int? id;
@@ -65,7 +73,7 @@ class ContentItem {
   String? volume;
   String? summary;
   int? downloadable;
-  int? time;
+  String? time;
   int? questionCount;
   int? date;
 
@@ -88,19 +96,20 @@ class ContentItem {
     });
 
   ContentItem.fromJson(Map<String, dynamic> json) {
-    can = json['can'] != null ? Can.fromJson(json['can']) : null;
+    id = json['courseActivityId'];
+    title = json['courseActivityTitle'];
+    type = json['courseActivityType'];
+    time = json['videoTime'];
+    downloadable = json['downloadable'] ?? 1;
+    can = json['courseActicityStatus'] != null ? Can(view: json['courseActicityStatus'] == -1 ? false : true) : null; //Can.fromJson(json['can']) : null;
+
     canViewError = json['can_view_error'];
     authHasRead = json['auth_has_read'];
-    type = json['type'];
     createdAt = json['created_at'];
     link = json['link'];
-    id = json['id'];
-    title = json['title'];
     fileType = json['file_type'];
     storage = json['storage'];
     volume = json['volume'];
-    downloadable = json['downloadable'];
-    time = json['time'];
     questionCount = json['question_count'];
     date = json['date'];
     summary = json['summary'];
@@ -123,5 +132,21 @@ class ContentItem {
     data['volume'] = volume;
     data['downloadable'] = downloadable;
     return data;
+  }
+}
+
+enum CourseActivityType {
+  video,
+  file
+}
+
+extension CourseActivityTypeExtension on CourseActivityType {
+  int get value {
+    switch (this) {
+      case CourseActivityType.video:
+        return 1;
+      case CourseActivityType.file:
+        return 2;
+    }
   }
 }

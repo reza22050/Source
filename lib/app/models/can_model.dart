@@ -5,7 +5,7 @@ class Can {
   bool? update;
   bool? view;
 
-  Can({this.pin, this.resolve, this.update});
+  Can({this.pin, this.resolve, this.update, this.view = false});
 
   Can.fromJson(Map<String, dynamic> json) {
     pin = json['pin'];

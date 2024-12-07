@@ -247,17 +247,18 @@ class SingleCourseWidget {
       {List<CourseModel> bundleCourses = const []}) {
     String iconType(ContentItem item) {
       switch (item.type) {
-        case 'quiz':
+        /*case 'quiz':
           return AppAssets.shieldSvg;
 
         case 'text_lesson':
         case 'assignment':
           return AppAssets.documentSvg;
-
-        case 'file':
-          return item.downloadable == 1
-              ? AppAssets.paperDownloadSvg
-              : AppAssets.videoSvg;
+*/
+        case 2:
+          return AppAssets.paperDownloadSvg;
+          // return item.downloadable == 1
+          //     ? AppAssets.paperDownloadSvg
+          //     : AppAssets.videoSvg;
 
         default:
           return AppAssets.videoSvg;
@@ -266,17 +267,17 @@ class SingleCourseWidget {
 
     String subTitleType(ContentItem item) {
       switch (item.type) {
-        case 'quiz':
-          return '${item.questionCount ?? 0} ${appText.questions} | ${item.time ?? 0} ${appText.min}';
+        // case 'quiz':
+        //   return '${item.questionCount ?? 0} ${appText.questions} | ${item.time ?? 0} ${appText.min}';
 
-        case 'text_lesson':
-          return item.summary ?? '';
+        // case 'text_lesson':
+        //   return item.summary ?? '';
 
-        case 'file':
+        case 2:
           return item.volume ?? '';
 
-        case 'session':
-          return "${timeStampToDate((item.date ?? 0) * 1000)} | ${DateTime.fromMillisecondsSinceEpoch((item.date ?? 0) * 1000).toString().split(' ').last.substring(0, 5)}";
+        // case 'session':
+        //   return "${timeStampToDate((item.date ?? 0) * 1000)} | ${DateTime.fromMillisecondsSinceEpoch((item.date ?? 0) * 1000).toString().split(' ').last.substring(0, 5)}";
 
         default:
           return item.volume ?? '';
@@ -285,20 +286,20 @@ class SingleCourseWidget {
 
     Color colorType(ContentItem item) {
       switch (item.type) {
-        case 'quiz':
-          return cyan50;
+        // case 'quiz':
+        //   return cyan50;
 
-        case 'text_lesson':
-          return yellow29;
+        // case 'text_lesson':
+        //   return yellow29;
 
-        case 'file':
+        case 2:
           return green50;
 
-        case 'session':
-          return blueFE;
+        // case 'session':
+        //   return blueFE;
 
-        case 'assignment':
-          return blueA4;
+        // case 'assignment':
+        //   return blueA4;
 
         default:
           return green50;
@@ -307,21 +308,21 @@ class SingleCourseWidget {
 
     int sizeType(ContentItem item) {
       switch (item.type) {
-        case 'quiz':
+       /* case 'quiz':
           return 24;
 
         case 'text_lesson':
           return 20;
-
-        case 'file':
+*/
+        case 2:
           return item.downloadable == 1 ? 24 : 18;
 
-        case 'session':
+  /*      case 'session':
           return 18;
 
         case 'assignment':
           return 22;
-
+*/
         default:
           return 24;
       }
@@ -368,10 +369,8 @@ class SingleCourseWidget {
                             contents[index].items?[i].title ?? '',
                             subTitleType(contents[index].items![i]),
                             () {
-                              if (contents[index].items?[i].can?.view ??
-                                  false) {
-                                if (contents[index].items![i].type ==
-                                    'assignment') {
+                              if (contents[index].items?[i].can?.view ?? false) {
+                                if (contents[index].items![i].type =='assignment') {
                                   nextRoute(AssignmentsPage.pageName);
                                 } else if (contents[index].items![i].type ==
                                     'quiz') {

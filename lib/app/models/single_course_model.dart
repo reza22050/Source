@@ -1,5 +1,6 @@
 import 'package:webinar/app/models/blog_model.dart';
 import 'package:webinar/app/models/can_model.dart';
+import 'package:webinar/app/models/content_model.dart';
 import 'package:webinar/app/models/user_model.dart';
 
 import 'course_model.dart';
@@ -72,7 +73,9 @@ class SingleCourseModel {
   List<TextLessonChapters> textLessonChapters = [];
   List<FilesChapters> filesChapters = [];
   List<ReviewModel>? reviews;
-
+  
+  List<ContentModel>? contents;
+  
   int? activityCount;
   int? sessionsCount;
   int? textLessonsCount;
@@ -156,7 +159,8 @@ class SingleCourseModel {
       this.physicalSalePrice,
       this.physicalOriginalPrice,
       this.physicalDicountPrice,
-      this.physicalEnrollmentId});
+      this.physicalEnrollmentId, 
+      this.contents});
 
   SingleCourseModel.fromJson(Map<String, dynamic> json) {
     if (json['cashbackRules'] != null) {
@@ -182,7 +186,7 @@ class SingleCourseModel {
     link = json['link'];
     accessDays = json['access_days'];
     liveWebinarStatus = json['live_webinar_status'];
-    authHasBought = json['auth_has_bought'] = false;
+    authHasBought = json['authHasBought'] ?? false;
     sales = json['sales'] != null ? Sales.fromJson(json['sales']) : null;
     isFavorite = json['is_favorite'];
     priceString = json['price_string'];
@@ -229,6 +233,13 @@ class SingleCourseModel {
     support = json['support'];
     subscribe = json['subscribe'];
     description = json['courseInfo']['description'];
+
+    if (json['courseSectionDetails'] != null) {
+      contents = <ContentModel>[];
+      json['courseSectionDetails'].forEach((v) {
+        contents!.add(ContentModel.fromJson(v));
+      });
+    }
 
     if (json['faqs'] != null) {
       faqs = <Faqs>[];
@@ -320,10 +331,10 @@ class SingleCourseModel {
       });
     }
 
-    videoDemo = json['video_demo'];
-    videoDemoSource = json['video_demo_source'];
+    videoDemo = json['videoDemo'];
+    videoDemoSource = json['video_demo_source'] ?? 'hls';
     imageCover = json['image_cover'];
-    isDownloadable = json['isDownloadable'];
+    isDownloadable = json['isDownloadable'] ?? true;
     teacherIsOffline = json['teacher_is_offline'];
 
     if (json['tags'] != null) {

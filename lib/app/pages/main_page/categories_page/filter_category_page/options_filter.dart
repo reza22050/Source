@@ -43,27 +43,27 @@ class _OptionsFilterState extends State<OptionsFilter> {
 
 
     switch (locator<FilterCourseProvider>().sort) {
-      case '':
+      case 1:
         allSort = true;
         break;
       
-      case 'newest':
+      case 3:
         newestSort = true;
         break;
       
-      case 'expensive':
+      case 5:
         highSort = true;
         break;
       
-      case 'inexpensive':
+      case 4:
         lowSort = true;
         break;
       
-      case 'bestsellers':
+      case 2:
         bestSellerSort = true;
         break;
       
-      case 'best_rates':
+      case 6:
         defaultSort = true;
         break;
 

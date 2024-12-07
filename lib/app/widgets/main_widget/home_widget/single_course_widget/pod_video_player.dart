@@ -18,8 +18,24 @@ class _VimeoVideoPlayerState extends State<PodVideoPlayerDev> with RouteAware {
 
   @override
   void initState() {
-    
-    if(widget.type == 'vimeo'){
+       // Check if the video type is HLS
+    if (widget.type == 'hls') {
+      controller = PodPlayerController(
+        playVideoFrom: PlayVideoFrom.network(
+          widget.url,
+          videoPlayerOptions: VideoPlayerOptions(
+            allowBackgroundPlayback: true,
+          ),
+        ),
+        podPlayerConfig: const PodPlayerConfig(
+          autoPlay: true,
+          isLooping: false,
+          wakelockEnabled: true,
+        ),
+      );
+      controller.initialise();
+    }
+    else if(widget.type == 'vimeo'){
       controller = PodPlayerController(
         playVideoFrom: PlayVideoFrom.vimeo(
           widget.url,

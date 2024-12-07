@@ -64,8 +64,8 @@ class SingleContentModel {
     authHasRead = json['auth_has_read'];
     authHasAccess = json['auth_has_access'];
     userHasAccess = json['user_has_access'];
-    fileType = json['file_type'];
-    volume = json['volume'];
+    fileType = json['file_type'] ?? "mp4";
+    volume = json['volume'] = "2MB";
     storage = json['storage'];
     downloadLink = json['download_link'];
     file = json['file'];

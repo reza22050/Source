@@ -409,6 +409,7 @@ body.fields.forEach((field) {
   } else {
     return res;
   }
+  
 }
 
 Future<dio.Response> dioPostWithToken(dynamic url, dynamic body,
@@ -418,9 +419,10 @@ Future<dio.Response> dioPostWithToken(dynamic url, dynamic body,
   Map<String, String> headers = {
     "Authorization": "Bearer $token",
     "Content-Type": "application/json",
-    'Accept': 'application/json',
-    'x-api-key': Constants.apiKey,
-    'x-locale': locator<AppLanguage>().currentLanguage.toLowerCase(),
+    'Accept': '*/*',
+    //'Accept': 'application/json',
+    //'x-api-key': Constants.apiKey,
+    //'x-locale': locator<AppLanguage>().currentLanguage.toLowerCase(),
   };
 
   return dioPost(url, body,
