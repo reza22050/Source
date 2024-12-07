@@ -6,7 +6,7 @@ class Constants {
   static const dommain = 'https://app.rocket-soft.org';
   static const baseUrl = '$dommain/api/development/';
   
-  static const apiUrl = 'http://test.ketab100.ir/api/v1/';
+  static const apiUrl = 'http://api.pishraftvod.ir/api/v1/';
 
   static const apiKey = '1234';
   static const scheme = 'academyapp';
